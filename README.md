@@ -22,7 +22,7 @@ Réplica geográfica do painel [Causa Mortis](https://causamortis.net) (Zanchett
 
 ## Pipeline
 
-Os scripts que geram `data/mortality-indexed.json` estão em `pipeline/` (Python 3.11+, pandas, pyarrow, ijson, datasus-dbc, dbfread), com o inventário passo a passo em `docs/` e os scripts de download para Windows em `scripts-download/`. Eles esperam a pasta `causa-mortis-main` (o repositório original) ao lado deste diretório: de lá vêm o `03_classificar.py`, o `sim_files.csv` e o `mortality-indexed.json` usados como molde e como referência de validação. O `data/mortality-indexed.json` (123 MB) não está no repositório por exceder o limite do GitHub; `public/data/` contém tudo o que o site precisa já gerado. Depois de regenerar o arquivo:
+Os scripts que geram `data/mortality-indexed.json` estão em `pipeline/` (Python 3.11+, pandas, pyarrow, ijson, datasus-dbc, dbfread), com o inventário passo a passo em `docs/` e os scripts de download para Windows em `scripts-download/`. Eles esperam a pasta `causa-mortis-main` (o repositório original) ao lado deste diretório: de lá vêm o `03_classificar.py`, o `sim_files.csv` e o `mortality-indexed.json` usados como molde e como referência de validação. O `data/mortality-indexed.json` (123 MB) excede o limite do GitHub e está no repositório como `mortality-indexed.json.gz` (10 MB), que o script de geração lê diretamente; `public/data/` contém tudo o que o site precisa já gerado. Depois de regenerar o arquivo:
 
 ```
 npm run data:generate

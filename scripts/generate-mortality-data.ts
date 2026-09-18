@@ -1,4 +1,5 @@
 import {
+  existsSync,
   readFileSync,
   writeFileSync,
   mkdirSync,
@@ -6,7 +7,7 @@ import {
   statSync,
 } from "node:fs";
 import { createHash } from "node:crypto";
-import { deflateRawSync } from "node:zlib";
+import { deflateRawSync, gunzipSync } from "node:zlib";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { buildZip } from "../src/lib/mortality/zip.ts";
@@ -23,6 +24,7 @@ import type {
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const SRC_INDEXED = path.join(HERE, "..", "data", "mortality-indexed.json");
+const SRC_INDEXED_GZ = `${SRC_INDEXED}.gz`;
 const SRC_GEO_SIMPLIFIED = path.join(
   HERE,
   "..",
@@ -45,7 +47,9 @@ const MANIFEST_OUT_FILE = path.join(
 mkdirSync(JSON_OUT_DIR, { recursive: true });
 mkdirSync(CSV_OUT_DIR, { recursive: true });
 
-const indexedRaw = readFileSync(SRC_INDEXED, "utf-8");
+const indexedRaw = existsSync(SRC_INDEXED)
+  ? readFileSync(SRC_INDEXED, "utf-8")
+  : gunzipSync(readFileSync(SRC_INDEXED_GZ)).toString("utf-8");
 const indexed: MortalityIndexed = JSON.parse(indexedRaw);
 const dimensions = indexed.dimensions;
 

@@ -3,7 +3,10 @@
 `mortality-indexed.json` é a base bruta usada pelos gráficos do site (RS + 497 municípios,
 aninhados por índice — ver `dimensions` para resolver cada índice ao rótulo correspondente).
 É gerado por `../pipeline/05_06_montar_indexed_rs_v3.py` e verificado por
-`../pipeline/08_assercoes_rs_v2.py`.
+`../pipeline/08_assercoes_rs_v2.py`. Tem 123 MB, acima do limite de 100 MB do GitHub, por isso
+o repositório guarda só `mortality-indexed.json.gz` (10 MB, `gzip -9`); o script de geração lê
+o `.gz` diretamente quando o `.json` não existe, e a versão publicada (hash do conteúdo) é a
+mesma nos dois casos. Ao regenerar o arquivo, atualize o `.gz` com `gzip -9 -k data/mortality-indexed.json`.
 
 `rs-municipalities-simplified.geojson` é a malha municipal usada pelo mapa (API de malhas do
 IBGE, qualidade mínima, coordenadas com 4 casas; `properties.name` = 6 primeiros dígitos do
