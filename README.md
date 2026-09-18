@@ -2,6 +2,10 @@
 
 Réplica geográfica do painel [Causa Mortis](https://causamortis.net) (Zanchetta Jr., Weise e Veloso, licença MIT) para o Rio Grande do Sul e seus 497 municípios, construída com [Astro](https://astro.build) e [ECharts](https://echarts.apache.org/). Mesma lógica, mesmas regras de classificação e os mesmos gráficos do original; muda só a dimensão geográfica, e os dados foram extraídos de novo, diretamente das fontes oficiais.
 
+## Como citar
+
+Este painel é uma réplica geográfica do **Causa Mortis** (ZANCHETTA JR., Celso; WEISE, Franklin; VELOSO, Pedro. _Causa Mortis: mortalidade no Brasil, causa por causa_. Versão 1.0. 2026. https://causamortis.net · https://github.com/causa-mortis-brasil/causa-mortis · MIT). Ao citar este repositório, cite também o projeto original. Os metadados de citação, com a referência ao original, estão em [`CITATION.cff`](CITATION.cff).
+
 ## Fontes dos dados
 
 - **Óbitos:** SIM (Sistema de Informações sobre Mortalidade), microdados do Portal de Dados Abertos do SUS (2000–2025; 2022 e 2023 do CSV republicado em setembro de 2026, validado contra `DORS2022/2023.dbc` do FTP do DATASUS).

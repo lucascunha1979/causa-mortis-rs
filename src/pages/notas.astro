@@ -11,7 +11,17 @@ const bibtex = `@software{causamortisrs2026,
   title   = {Causa Mortis RS: mortalidade no Rio Grande do Sul, município por município},
   version = {1.0},
   year    = {2026},
-  note    = {Painel interativo. Réplica geográfica de Zanchetta Jr., C.; Weise, F.; Veloso, P. Causa Mortis (https://causamortis.net), licença MIT}
+  url     = {https://github.com/lucascunha1979/causa-mortis-rs},
+  note    = {Painel interativo. Réplica geográfica de causamortis2026; cite também o original}
+}
+
+@software{causamortis2026,
+  author  = {Zanchetta Jr., Celso and Weise, Franklin and Veloso, Pedro},
+  title   = {Causa Mortis: mortalidade no Brasil, causa por causa},
+  version = {1.0},
+  year    = {2026},
+  url     = {https://causamortis.net},
+  note    = {Projeto original, licença MIT. ORCID: 0009-0007-4539-548X (Zanchetta Jr.), 0009-0009-7979-7334 (Weise), 0009-0004-9614-171X (Veloso)}
 }`;
 ---
 
@@ -197,11 +207,14 @@ const bibtex = `@software{causamortisrs2026,
               <strong
                 >Causa Mortis RS: mortalidade no Rio Grande do Sul, município
                 por município</strong
-              >. Versão 1.0. 2026. Painel interativo, réplica geográfica de
-              ZANCHETTA JR., Celso; WEISE, Franklin; VELOSO, Pedro. Causa Mortis
-              (https://causamortis.net). Acesso em: <span data-access-date
-                >{formatAccessDate(new Date())}</span
-              >.
+              >. Versão 1.0. 2026. Painel interativo. Disponível em:
+              https://github.com/lucascunha1979/causa-mortis-rs. Acesso em: <span
+                data-access-date>{formatAccessDate(new Date())}</span
+              >. Réplica geográfica de: ZANCHETTA JR., Celso; WEISE, Franklin;
+              VELOSO, Pedro. <strong
+                >Causa Mortis: mortalidade no Brasil, causa por causa</strong
+              >. Versão 1.0. São Paulo, 2026. Painel interativo. Disponível em:
+              https://causamortis.net.
             </p>
           </div>
           <p>
