@@ -1,0 +1,236 @@
+---
+import { ChartArea, ChartLine, LayoutPanelLeft, Map } from "@lucide/astro";
+import OneTwoThreeIcon from "../icons/OneTwoThreeIcon.astro";
+import PopulationPyramidIcon from "../icons/PopulationPyramidIcon.astro";
+import ChartCard from "./ChartCard.astro";
+import ChartFullscreenToggle from "./ChartFullscreenToggle.astro";
+import FilterBar from "./FilterBar.astro";
+import SummaryStat from "./SummaryStat.astro";
+import YearControl from "./YearControl.astro";
+
+const charts = [
+  { name: "map", label: "Mapa", icon: Map },
+  { name: "evolution", label: "Evolução", icon: ChartLine },
+  { name: "causes", label: "Causas", icon: LayoutPanelLeft },
+  {
+    name: "age-composition",
+    label: "Composição",
+    icon: ChartArea,
+  },
+  { name: "pyramid", label: "Sexo", icon: PopulationPyramidIcon },
+  { name: "stats", label: "Resumo", icon: OneTwoThreeIcon },
+];
+---
+
+<section id="mortality-explorer" class="app-content-col gap-4">
+  <div
+    id="filters-panel-wrap"
+    class="grid w-full grid-rows-[1fr] transition-[grid-template-rows,opacity,margin-bottom] duration-200 ease-in-out data-hiding:-mb-4 data-hiding:grid-rows-[0fr] data-hiding:opacity-0 motion-reduce:transition-none"
+  >
+    <div data-filters-panel-clip>
+      <div
+        id="filters-panel"
+        class="w-full rounded-ui-lg bg-primary-100 dark:bg-primary-950"
+      >
+        <div class="center w-full">
+          <div
+            id="filters-row"
+            class="app-content flex-wrap items-center justify-between gap-x-1 gap-y-2 p-4"
+          >
+            <FilterBar />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <YearControl />
+
+  <div class="flex flex-col gap-4 md:flex-row md:items-start">
+    <nav
+      id="chart-tabs-nav"
+      aria-label="Selecionar gráfico"
+      role="tablist"
+      aria-orientation="vertical"
+      class="group/nav flex w-full flex-row gap-2 md:w-auto md:shrink-0 md:flex-col md:justify-start"
+    >
+      {
+        charts.map(({ name, label, icon: Icon }) => (
+          <button
+            type="button"
+            id={`tab-${name}`}
+            role="tab"
+            title={label}
+            data-chart-tab={name}
+            aria-selected={name === "map"}
+            aria-controls={`panel-${name}`}
+            class="flex h-13 min-w-0 flex-1 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-ui-lg border border-gray-200 bg-white px-2 text-sm font-medium text-gray-600 transition-[background-color,border-color,color] duration-200 ease-out hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 aria-selected:border-primary-200 aria-selected:bg-primary-50 aria-selected:text-primary-600 motion-reduce:transition-none md:w-13 md:flex-none md:justify-start md:px-4 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:aria-selected:border-primary-800 dark:aria-selected:bg-primary-950 dark:aria-selected:text-primary-300"
+          >
+            <Icon class="size-5 shrink-0" />
+            <span class="sr-only whitespace-nowrap group-data-expanded/nav:not-sr-only">
+              {label}
+            </span>
+          </button>
+        ))
+      }
+    </nav>
+
+    <div
+      data-chart-panels
+      class="flex min-w-0 grow flex-col gap-4 transition-[height] duration-300 ease-in-out motion-reduce:transition-none"
+    >
+      <div
+        id="panel-stats"
+        class="chart-card flex flex-col gap-4 rounded-ui-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800"
+        data-chart-panel="stats"
+        role="tabpanel"
+        aria-labelledby="tab-stats"
+        hidden
+      >
+        <h2
+          data-chart-title
+          class="text-center text-base font-bold uppercase sm:text-xl"
+        >
+          Resumo
+        </h2>
+        <p
+          id="stat-location-missing"
+          class="text-center text-sm text-gray-600 empty:hidden dark:text-gray-400"
+        >
+        </p>
+        <div
+          id="stats-summary-grid"
+          class="grid grid-cols-1 gap-3 sm:gap-4 lg:auto-rows-fr lg:grid-cols-2"
+        >
+          <SummaryStat label="Óbitos registrados" valueId="stat-deaths-value" />
+          <SummaryStat
+            label="Taxa padronizada"
+            valueId="stat-std-rate-value"
+            unit="por 100 mil hab."
+            subtitleId="stat-std-rate-delta"
+          />
+          <SummaryStat
+            label="Cobertura do SIM"
+            valueId="stat-coverage-value"
+            subtitleId="stat-coverage-subtitle"
+          />
+          <SummaryStat
+            label="Taxa bruta"
+            valueId="stat-crude-rate-value"
+            unit="por 100 mil hab."
+            subtitleId="stat-crude-rate-delta"
+          />
+        </div>
+        <div
+          class="flex justify-end border-t border-gray-100 pt-2 dark:border-gray-700"
+        >
+          <ChartFullscreenToggle />
+        </div>
+      </div>
+
+      <ChartCard
+        title="Onde se morre mais"
+        chartId="chart-map"
+        chartName="map"
+        height="h-96 md:h-120"
+        active
+        fullscreenToggle
+      >
+        <div slot="controls" class="flex flex-wrap items-center gap-3 sm:gap-4">
+          <label
+            class="flex items-center gap-2 text-sm text-gray-600 select-none dark:text-gray-400"
+          >
+            <input
+              type="checkbox"
+              id="map-scale-stable"
+              autocomplete="off"
+              class="accent-primary-500"
+            />
+            Escala estável
+          </label>
+        </div>
+      </ChartCard>
+
+      <ChartCard
+        title="Evolução das taxas"
+        chartId="chart-evolution"
+        chartName="evolution"
+        height="h-96 md:h-120"
+        fullscreenToggle
+      >
+        <div slot="controls" class="flex flex-wrap items-center gap-3 sm:gap-4">
+          {
+            [
+              { id: "evolution-moving-average", label: "Média móvel (3 anos)" },
+              { id: "evolution-period-mean", label: "Média do período" },
+              { id: "evolution-trend", label: "Tendência linear" },
+            ].map(({ id, label }) => (
+              <label class="flex items-center gap-2 text-sm text-gray-600 select-none dark:text-gray-400">
+                <input
+                  type="checkbox"
+                  id={id}
+                  autocomplete="off"
+                  class="accent-primary-500"
+                />
+                {label}
+              </label>
+            ))
+          }
+        </div>
+      </ChartCard>
+
+      <ChartCard
+        title="Do que se morre"
+        chartId="chart-causes"
+        chartName="causes"
+        height="h-96 md:h-120 md:max-w-2xl md:mx-auto"
+        fullscreenToggle
+      />
+
+      <ChartCard
+        title="Do que se morre em cada idade"
+        chartId="chart-age-composition"
+        chartName="age-composition"
+        height="h-108 md:h-128"
+        fullscreenToggle
+      />
+
+      <ChartCard
+        title="Pirâmide de mortalidade"
+        chartId="chart-pyramid"
+        chartName="pyramid"
+        height="h-96 md:h-120"
+        fullscreenToggle
+      />
+    </div>
+  </div>
+
+  <script>
+    import { mountMortalityExplorer } from "../../lib/mortality/main.ts";
+
+    const explorer = document.getElementById("mortality-explorer");
+    if (explorer) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            observer.disconnect();
+            void mountMortalityExplorer(explorer);
+          }
+        },
+        { rootMargin: "200px" },
+      );
+      observer.observe(explorer);
+    }
+  </script>
+</section>
+
+<aside
+  id="chart-fullscreen-sidebar"
+  hidden
+  inert
+  aria-label="Navegação e filtros em tela cheia"
+  class="fixed inset-y-0 left-0 z-10 w-72 overflow-y-auto border-r border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+>
+  <div data-fullscreen-sidebar-content class="flex flex-col gap-4 p-4 pt-0">
+  </div>
+</aside>

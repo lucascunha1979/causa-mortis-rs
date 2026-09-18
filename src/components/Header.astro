@@ -1,0 +1,96 @@
+---
+import { Menu } from "@lucide/astro";
+import GithubIcon from "./icons/GithubIcon.astro";
+import { siteNavLinks } from "../lib/nav";
+---
+
+<div
+  id="app-header"
+  class="center group fixed inset-x-0 top-0 z-30 h-16 border-b border-white/10 bg-primary-950/90 backdrop-blur-xl transition-[height] duration-200 ease-out data-scrolled:h-12 motion-reduce:transition-none dark:bg-gray-950/75"
+>
+  <header
+    class="app-content app-gutter items-center justify-between gap-4 text-white"
+  >
+    <a href="/" class="shrink-0">
+      <span
+        class="text-xl transition-[font-size] duration-200 ease-out group-data-scrolled:text-lg motion-reduce:transition-none sm:text-2xl"
+        ><span class="font-light text-white/80">causa</span><span
+          class="text-[0.92em] font-extrabold text-white">mortis</span
+        ><span class="ml-1.5 text-[0.7em] font-medium text-white/70">RS</span
+        ></span
+      >
+    </a>
+
+    <div class="flex items-center gap-2 sm:gap-6">
+      <nav aria-label="Navegação principal" class="hidden sm:block">
+        <ul
+          class="flex gap-6 text-base transition-[font-size] duration-200 ease-out group-data-scrolled:text-sm motion-reduce:transition-none"
+        >
+          {
+            siteNavLinks.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  target={link.external ? "_blank" : undefined}
+                  rel={link.external ? "noopener noreferrer" : undefined}
+                  class="flex items-center gap-1.5 text-white/85 transition-colors hover:text-white"
+                >
+                  {link.icon === "github" && (
+                    <GithubIcon class="size-4 transition-[width,height] duration-200 ease-out group-data-scrolled:size-3.5 motion-reduce:transition-none" />
+                  )}
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <details class="relative sm:hidden">
+        <summary
+          class="flex cursor-pointer list-none items-center rounded-ui-sm p-2 text-white transition-colors select-none hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          aria-label="Abrir menu de navegação"
+        >
+          <Menu
+            class="size-5 transition-[width,height] duration-200 ease-out group-data-scrolled:size-4 motion-reduce:transition-none"
+          />
+        </summary>
+        <nav aria-label="Menu de navegação" class="chart-export-menu right-0">
+          <ul class="flex flex-col gap-1">
+            {
+              siteNavLinks.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    target={link.external ? "_blank" : undefined}
+                    rel={link.external ? "noopener noreferrer" : undefined}
+                    class="chart-export-item"
+                  >
+                    {link.icon === "github" && <GithubIcon class="size-4" />}
+                    {link.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </details>
+    </div>
+  </header>
+</div>
+
+<div id="app-header-spacer" aria-hidden="true" class="h-16 w-full"></div>
+
+<script>
+  const header = document.getElementById("app-header");
+  const spacer = document.getElementById("app-header-spacer");
+
+  if (header && spacer) {
+    const observer = new IntersectionObserver(
+      ([entry]) =>
+        header.toggleAttribute("data-scrolled", !entry.isIntersecting),
+      { threshold: 0 },
+    );
+    observer.observe(spacer);
+  }
+</script>

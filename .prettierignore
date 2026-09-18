@@ -1,0 +1,8 @@
+dist
+.astro
+.vercel
+node_modules
+public/data
+data/rs-municipalities-simplified.geojson
+data/mortality-indexed.json
+vercel.json

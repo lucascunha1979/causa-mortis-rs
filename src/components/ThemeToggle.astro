@@ -1,0 +1,45 @@
+---
+import { Moon, Sun } from "@lucide/astro";
+
+interface Props {
+  class: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<button
+  type="button"
+  data-theme-toggle
+  aria-label="Ativar modo claro"
+  class:list={[
+    "flex cursor-pointer items-center rounded-ui-sm p-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
+    className,
+  ]}
+>
+  <Moon class="size-5 dark:hidden" />
+  <Sun class="hidden size-5 dark:block" />
+</button>
+
+<script>
+  import { currentTheme, setTheme } from "../lib/theme";
+
+  const buttons = document.querySelectorAll<HTMLButtonElement>(
+    "[data-theme-toggle]",
+  );
+
+  function syncLabels(): void {
+    const label =
+      currentTheme() === "dark" ? "Ativar modo claro" : "Ativar modo escuro";
+    for (const button of buttons) button.setAttribute("aria-label", label);
+  }
+
+  syncLabels();
+
+  for (const button of buttons) {
+    button.addEventListener("click", () => {
+      setTheme(currentTheme() === "dark" ? "light" : "dark");
+      syncLabels();
+    });
+  }
+</script>

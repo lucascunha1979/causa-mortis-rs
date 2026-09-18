@@ -1,0 +1,247 @@
+﻿execucao 2026-09-17T22:30:18
+ok IBGE municipios_rs.json
+ok IBGE malha_rs_municipios.geojson
+ok IBGE malha_rs_municipios_minima.geojson
+=== listagem ftp://ftp.datasus.gov.br/dissemin/publicos/IBGE/
+08-29-18  01:08PM       <DIR>          Auxiliar
+02-24-18  07:38AM       <DIR>          censo
+01-07-25  10:20AM       <DIR>          doc
+02-24-18  07:38AM       <DIR>          POP
+11-03-25  06:18PM       <DIR>          POPSVS
+01-21-26  03:10PM       <DIR>          POPTCU
+01-07-25  09:42AM       <DIR>          projpop
+=== listagem ftp://ftp.datasus.gov.br/dissemin/publicos/IBGE/POPSVS/
+01-07-25  11:20AM              3416249 POPSBR00.zip
+01-07-25  11:20AM              3405317 POPSBR01.zip
+01-07-25  11:20AM              3401544 POPSBR02.zip
+01-07-25  11:20AM              3403048 POPSBR03.zip
+01-07-25  11:20AM              3407628 POPSBR04.zip
+01-07-25  11:20AM              3411535 POPSBR05.zip
+01-07-25  11:20AM              3414212 POPSBR06.zip
+01-07-25  11:20AM              3419683 POPSBR07.zip
+01-07-25  11:20AM              3441902 POPSBR08.zip
+01-07-25  11:20AM              3471126 POPSBR09.zip
+01-07-25  11:20AM              3467526 POPSBR10.zip
+01-07-25  11:20AM              3463398 POPSBR11.zip
+01-07-25  11:20AM              3454142 POPSBR12.zip
+01-07-25  11:20AM              3443320 POPSBR13.zip
+01-07-25  11:21AM              3430439 POPSBR14.zip
+01-07-25  11:21AM              3419534 POPSBR15.zip
+01-07-25  11:21AM              3409272 POPSBR16.zip
+01-07-25  11:21AM              3400663 POPSBR17.zip
+01-07-25  11:21AM              3383109 POPSBR18.zip
+01-07-25  11:21AM              3373777 POPSBR19.zip
+01-07-25  11:21AM              3373160 POPSBR20.zip
+01-07-25  11:21AM              3378457 POPSBR21.zip
+01-07-25  11:21AM              3378657 POPSBR22.zip
+01-07-25  11:21AM              3360669 POPSBR23.zip
+01-07-25  11:20AM              3342323 POPSBR24.zip
+10-29-25  09:46AM              4750600 POPSBR25.zip
+=== listagem ftp://ftp.datasus.gov.br/dissemin/publicos/IBGE/POPSVS/DOCS/
+curl.exe : curl: (9) Server denied you to change to the given directory
+No C:\Users\lucas\OneDrive\Área de Trabalho\ce24\causa-mortis-rs\baixar_populacao_malha.ps1:22 caractere:8
++   $l = & curl.exe -sS --retry 5 --retry-delay 10 --retry-all-errors " ...
++        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (curl: (9) Serve...given directory:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+curl: (9) Server denied you to change to the given directory
+curl: (9) Server denied you to change to the given directory
+curl: (9) Server denied you to change to the given directory
+curl: (9) Server denied you to change to the given directory
+curl: (9) Server denied you to change to the given directory
+=== listagem ftp://ftp.datasus.gov.br/dissemin/publicos/IBGE/POP/
+09-06-14  05:59PM             10665874 POPBR00.zip
+09-06-14  05:59PM              5611970 POPBR01.zip
+09-06-14  05:59PM              5625373 POPBR02.zip
+09-06-14  05:59PM              5620133 POPBR03.zip
+09-06-14  05:59PM              5620509 POPBR04.zip
+09-06-14  05:59PM              5634075 POPBR05.zip
+09-06-14  05:59PM              5634703 POPBR06.zip
+09-06-14  05:59PM              5495589 POPBR07.zip
+09-06-14  05:59PM              5514725 POPBR08.zip
+09-06-14  05:59PM              5508977 POPBR09.zip
+09-06-14  05:59PM             10839085 POPBR10.zip
+11-10-15  02:44PM              5157383 POPBR11.zip
+11-10-15  02:44PM              5143534 POPBR12.zip
+09-06-14  05:59PM              7896922 POPBR80.zip
+09-06-14  05:59PM              2405846 POPBR81.zip
+09-06-14  05:59PM              2415902 POPBR82.zip
+09-06-14  05:59PM              2409830 POPBR83.zip
+09-06-14  05:59PM              2411956 POPBR84.zip
+09-06-14  05:59PM              2417311 POPBR85.zip
+09-06-14  05:59PM              2417768 POPBR86.zip
+09-06-14  05:59PM              2420901 POPBR87.zip
+09-06-14  05:59PM              2423959 POPBR88.zip
+09-06-14  05:59PM              2426822 POPBR89.zip
+09-06-14  05:59PM              2431549 POPBR90.zip
+09-06-14  05:59PM              8787978 POPBR91.zip
+09-06-14  05:59PM              2684358 POPBR92.zip
+09-06-14  05:59PM              3261812 POPBR93.zip
+09-06-14  05:59PM              3265341 POPBR94.zip
+09-06-14  05:59PM              3270818 POPBR95.zip
+09-06-14  05:59PM              5174619 POPBR96.zip
+09-06-14  05:59PM              5690189 POPBR97.zip
+09-06-14  05:59PM              5695367 POPBR98.zip
+09-06-14  05:59PM              5697950 POPBR99.zip
+=== listagem ftp://ftp.datasus.gov.br/dissemin/publicos/IBGE/POPTCU/
+09-06-14  05:59PM               100535 POPTBR00.zip
+09-06-14  05:59PM               101777 POPTBR01.zip
+09-06-14  05:59PM               101610 POPTBR02.zip
+09-06-14  05:59PM               101840 POPTBR03.zip
+09-06-14  05:59PM               101862 POPTBR04.zip
+09-06-14  05:59PM               102031 POPTBR05.zip
+09-06-14  05:59PM               102069 POPTBR06.zip
+09-06-14  05:59PM               102061 POPTBR07.zip
+09-06-14  05:59PM               102168 POPTBR08.zip
+09-06-14  05:59PM               102026 POPTBR09.zip
+09-06-14  05:59PM               102101 POPTBR10.zip
+09-06-14  05:59PM               101724 POPTBR11.zip
+09-06-14  05:59PM               101767 POPTBR12.zip
+09-06-14  05:59PM               102149 POPTBR13.zip
+11-10-14  09:20AM                32333 POPTBR14.zip
+08-29-15  01:16PM                32222 POPTBR15.zip
+01-11-17  02:03PM                32206 POPTBR16.zip
+08-28-18  05:52PM                35873 POPTBR17.zip
+02-13-19  03:01PM                35820 POPTBR18.zip
+03-27-20  04:33PM                35443 POPTBR19.zip
+05-19-22  12:08PM                35477 POPTBR20.zip
+05-19-22  12:08PM                35505 POPTBR21.zip
+01-07-25  09:38AM                77041 POPTBR22.zip
+01-07-25  09:38AM                77027 POPTBR23.zip
+01-07-25  09:40AM                35514 POPTBR24.zip
+01-21-26  03:10PM                41317 POPTBR25.zip
+09-06-14  05:59PM                91054 POPTBR92.zip
+09-06-14  05:59PM                90963 POPTBR93.zip
+09-06-14  05:59PM                90926 POPTBR94.zip
+09-06-14  05:59PM                91292 POPTBR95.zip
+09-06-14  05:59PM               100586 POPTBR97.zip
+09-06-14  05:59PM               100360 POPTBR98.zip
+09-06-14  05:59PM               100487 POPTBR99.zip
+=== listagem ftp://ftp.datasus.gov.br/dissemin/publicos/IBGE/projpop/
+01-07-25  09:42AM                93560 PROJUF00.dbf
+01-07-25  09:42AM                93560 PROJUF01.dbf
+01-07-25  09:42AM                93560 PROJUF02.dbf
+01-07-25  09:42AM                93560 PROJUF03.dbf
+01-07-25  09:42AM                93560 PROJUF04.dbf
+01-07-25  09:42AM                93560 PROJUF05.dbf
+01-07-25  09:42AM                93560 PROJUF06.dbf
+01-07-25  09:42AM                93560 PROJUF07.dbf
+01-07-25  09:42AM                93560 PROJUF08.dbf
+01-07-25  09:42AM                93560 PROJUF09.dbf
+01-07-25  09:42AM                93560 PROJUF10.dbf
+01-07-25  09:42AM                93560 PROJUF11.dbf
+01-07-25  09:42AM                93560 PROJUF12.dbf
+01-07-25  09:42AM                93560 PROJUF13.dbf
+01-07-25  09:42AM                93560 PROJUF14.dbf
+01-07-25  09:42AM                93560 PROJUF15.dbf
+01-07-25  09:42AM                93560 PROJUF16.dbf
+01-07-25  09:42AM                93560 PROJUF17.dbf
+01-07-25  09:42AM                93560 PROJUF18.dbf
+01-07-25  09:42AM                93560 PROJUF19.dbf
+01-07-25  09:42AM                93560 PROJUF20.dbf
+01-07-25  09:42AM                93560 PROJUF21.dbf
+01-07-25  09:42AM                93560 PROJUF22.dbf
+01-07-25  09:42AM                93560 PROJUF23.dbf
+01-07-25  09:42AM                93560 PROJUF24.dbf
+01-07-25  09:42AM                93560 PROJUF25.dbf
+01-07-25  09:42AM                93560 PROJUF26.dbf
+01-07-25  09:42AM                93560 PROJUF27.dbf
+01-07-25  09:42AM                93560 PROJUF28.dbf
+01-07-25  09:42AM                93560 PROJUF29.dbf
+01-07-25  09:42AM                93560 PROJUF30.dbf
+01-07-25  09:42AM                93560 PROJUF31.dbf
+01-07-25  09:42AM                93560 PROJUF32.dbf
+01-07-25  09:42AM                93560 PROJUF33.dbf
+01-07-25  09:42AM                93560 PROJUF34.dbf
+01-07-25  09:42AM                93560 PROJUF35.dbf
+01-07-25  09:42AM                93560 PROJUF36.dbf
+01-07-25  09:42AM                93560 PROJUF37.dbf
+01-07-25  09:42AM                93560 PROJUF38.dbf
+01-07-25  09:42AM                93560 PROJUF39.dbf
+01-07-25  09:42AM                93560 PROJUF40.dbf
+01-07-25  09:42AM                93560 PROJUF41.dbf
+01-07-25  09:42AM                93560 PROJUF42.dbf
+01-07-25  09:42AM                93560 PROJUF43.dbf
+01-07-25  09:42AM                93560 PROJUF44.dbf
+01-07-25  09:42AM                93560 PROJUF45.dbf
+01-07-25  09:42AM                93560 PROJUF46.dbf
+01-07-25  09:42AM                93560 PROJUF47.dbf
+01-07-25  09:42AM                93560 PROJUF48.dbf
+01-07-25  09:42AM                93560 PROJUF49.dbf
+01-07-25  09:42AM                93560 PROJUF50.dbf
+01-07-25  09:42AM                93560 PROJUF51.dbf
+01-07-25  09:42AM                93560 PROJUF52.dbf
+01-07-25  09:42AM                93560 PROJUF53.dbf
+01-07-25  09:42AM                93560 PROJUF54.dbf
+01-07-25  09:42AM                93560 PROJUF55.dbf
+01-07-25  09:42AM                93560 PROJUF56.dbf
+01-07-25  09:42AM                93560 PROJUF57.dbf
+01-07-25  09:42AM                93560 PROJUF58.dbf
+01-07-25  09:42AM                93560 PROJUF59.dbf
+01-07-25  09:42AM                93560 PROJUF60.dbf
+01-07-25  09:42AM                93560 PROJUF61.dbf
+01-07-25  09:42AM                93560 PROJUF62.dbf
+01-07-25  09:42AM                93560 PROJUF63.dbf
+01-07-25  09:42AM                93560 PROJUF64.dbf
+01-07-25  09:42AM                93560 PROJUF65.dbf
+01-07-25  09:42AM                93560 PROJUF66.dbf
+01-07-25  09:42AM                93560 PROJUF67.dbf
+01-07-25  09:42AM                93560 PROJUF68.dbf
+01-07-25  09:42AM                93560 PROJUF69.dbf
+01-07-25  09:42AM                93560 PROJUF70.dbf
+ok FTP POPSBR00.zip
+ok FTP POPSBR01.zip
+ok FTP POPSBR02.zip
+ok FTP POPSBR03.zip
+ok FTP POPSBR04.zip
+ok FTP POPSBR05.zip
+ok FTP POPSBR06.zip
+ok FTP POPSBR07.zip
+ok FTP POPSBR08.zip
+ok FTP POPSBR09.zip
+ok FTP POPSBR10.zip
+ok FTP POPSBR11.zip
+ok FTP POPSBR12.zip
+ok FTP POPSBR13.zip
+ok FTP POPSBR14.zip
+ok FTP POPSBR15.zip
+ok FTP POPSBR16.zip
+ok FTP POPSBR17.zip
+ok FTP POPSBR18.zip
+ok FTP POPSBR19.zip
+ok FTP POPSBR20.zip
+ok FTP POPSBR21.zip
+ok FTP POPSBR22.zip
+ok FTP POPSBR23.zip
+ok FTP POPSBR24.zip
+ok FTP POPSBR25.zip
+malha_rs_municipios.geojson                      880952 18b8734d915aba772757c73cf9b68e9b0ca71499a6a5856b4424f6a41a431c82
+malha_rs_municipios_minima.geojson               256084 1e9de26467d1cb24b7299967383d2dc5155ba493a94771a4b286a62d55c15515
+municipios_rs.json                               226419 0bb9694c5b2eaf295fb53df186d3573bf7a82e8e9d196d383518d240dde90e86
+POPSBR00.zip                                    3416249 414c80043b1f46aa2e1dfeed518879262e898d926f47de5ca9f38f5dbd211e88
+POPSBR01.zip                                    3405317 769f88d91df737451e14e9c6cfebe336ad94e7b6491cd9f3d5165d0b0622b47e
+POPSBR02.zip                                    3401544 e439d3157528a05238c924cb6be2c0935968c49ecc85a4e1e5230be2035b8d47
+POPSBR03.zip                                    3403048 022c9386ff794005fff66a0cd3bd2e61fc73b9ea10f79fde05bb4df5fb2ffe63
+POPSBR04.zip                                    3407628 a39b4c7618abe9b37d4d16e55d37676258258792788c6e087a114022a2c0dd4e
+POPSBR05.zip                                    3411535 019eb1dbd0cf164c433ed468002eb7f98af8b6d2a2dbc6d49fa8b636dba68113
+POPSBR06.zip                                    3414212 b5cadc05d46f2663d853919a88111a04398d2e440f5cbc926ed80116fbcfedf1
+POPSBR07.zip                                    3419683 1ee501c2ef814f2d15b72df55e4d1d9908bb2db772322bbadd8157f984e194df
+POPSBR08.zip                                    3441902 67fa7cf9550478bd56c454b4036d8023d98286e215b0dab597257f426dd500b1
+POPSBR09.zip                                    3471126 09cd1c42abef09b0e859864d53011c706fbaa6c4f24c12cbcc6e3378df3d90a2
+POPSBR10.zip                                    3467526 09d73461b67145db701995eb3b813b68641d75b710f9716d50479ed1f4fbb0bb
+POPSBR11.zip                                    3463398 c888e3f81419ccbdf99e7a1d287dee8ca4e309c4e7a8a54768aa13b396ac54d5
+POPSBR12.zip                                    3454142 647d464a18ccc658084456f76a4bcca98251448f2bb606b1405ce20a6d0d54f9
+POPSBR13.zip                                    3443320 426434193e259004161b2fe3c67482e765b2449de0a9106b8f9795fbd218e605
+POPSBR14.zip                                    3430439 760bb9ee8314d0afdda8343e0ba5abf167b2bf02af400a5556ed64815cedf7d9
+POPSBR15.zip                                    3419534 2b0834c2ed57f7bf4f3ae48739993680c06b192729acbdf5085c4c01839d776e
+POPSBR16.zip                                    3409272 57d89d81737579674a90217d1f1e091d747bcc558e7578cea6d4f068bd00a7ce
+POPSBR17.zip                                    3400663 973be04222a7c4496a69326fd71a533fbdc0533205b3176aebf099e109b803d9
+POPSBR18.zip                                    3383109 65ee675288065175a663678861dd33b51e91cbaad33bcfb3553be3d7837dd703
+POPSBR19.zip                                    3373777 c7358931ef4ca2047ab0fd4e70c6a6f8b93eec5d7610dcfd72aa141e372716e7
+POPSBR20.zip                                    3373160 02d0a48edebf15d5e74d50b1fffe8ec9a9f49758d346b8eede1eb4920488b1d3
+POPSBR21.zip                                    3378457 de6142870d23386bf5f1f0cf1fb8291a5093693debdb2e8c14bdf9cf49c41b21
+POPSBR22.zip                                    3378657 8619497c4adcb87133aab68666ed6604209b812047e9b51e3608db00a2c8e731
+POPSBR23.zip                                    3360669 c49b35794dc235bad8a4a0dbc530a82aeae589e03a366a3c17a8325e6c24d5f4
+POPSBR24.zip                                    3342323 cbf5549a5f9b37160e2fe3a5f97123a7747e371d4c433a8aa8a3276ad41dcc53
+POPSBR25.zip                                    4750600 1b39018193b785f62f8c52e060761b5f11c8759393b4d26aa25e9f1b208400e0

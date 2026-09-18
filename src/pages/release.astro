@@ -1,0 +1,152 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import Layout from "../components/Layout.astro";
+---
+
+<Layout
+  title="Release - Causa Mortis RS"
+  description="Sobre o painel Causa Mortis RS: origem, escopo, escolhas e créditos."
+>
+  <Header />
+
+  <main class="center-col gap-2 pb-8">
+    <div class="app-content-col">
+      <div class="app-gutter flex flex-col gap-2 pt-6 lg:pt-10">
+        <h1 class="text-2xl font-bold lg:text-3xl">Release</h1>
+      </div>
+    </div>
+
+    <div class="app-content-col app-gutter flex flex-col gap-6">
+      <section class="flex flex-col gap-3 text-gray-700 dark:text-gray-300">
+        <p>
+          O Brasil tem um sistema de registro de óbitos abrangente e de acesso
+          público: o SIM (Sistema de Informações sobre Mortalidade), do
+          Ministério da Saúde. Os dados podem ser consultados na web, pelo <a
+            class="underline transition-opacity duration-200 hover:opacity-70"
+            href="https://tabnet.datasus.gov.br/cgi/deftohtm.exe?sim/cnv/obt10rs.def"
+            target="_blank">TabNet</a
+          >, ou baixados como microdados, pelo <a
+            class="underline transition-opacity duration-200 hover:opacity-70"
+            href="https://datasus.saude.gov.br/transferencia-de-arquivos/"
+            target="_blank">DATASUS</a
+          > e pelo portal de <a
+            class="underline transition-opacity duration-200 hover:opacity-70"
+            href="https://dadosabertos.saude.gov.br/dataset/sim"
+            target="_blank">Dados Abertos</a
+          > do Ministério da Saúde.
+        </p>
+        <p>
+          O TabNet, porém, gera tabelas sem calcular taxas de mortalidade
+          padronizadas por idade. Sem a padronização, comparar municípios com
+          estruturas etárias diferentes, ou um mesmo município ao longo de
+          décadas de envelhecimento da população, pode levar a conclusões
+          enganosas.
+        </p>
+        <p>
+          O Causa Mortis RS é uma réplica do painel <a
+            class="underline transition-opacity duration-200 hover:opacity-70"
+            href="https://causamortis.net"
+            target="_blank"
+            rel="noopener noreferrer">Causa Mortis</a
+          >, que traz esse recurso aos dados brasileiros por unidade da
+          federação. Aqui a mesma lógica, as mesmas regras de classificação e os
+          mesmos gráficos são aplicados ao Rio Grande do Sul e aos seus 497
+          municípios, com os dados extraídos de novo, diretamente das fontes
+          oficiais.
+        </p>
+        <p>
+          Cada gráfico pode ser compartilhado por link ou baixado como imagem, e
+          os dados por trás de cada gráfico também podem ser baixados em CSV e
+          XLSX. Em vez de consultar a base completa a cada pedido, o painel
+          trabalha com tabelas pré-agregadas e leves, processadas no próprio
+          navegador.
+        </p>
+        <p>
+          A pandemia de COVID-19 produziu variações atípicas na mortalidade, e
+          isso está explícito nos gráficos: os anos de 2020, 2021 e 2022
+          aparecem destacados visualmente.
+        </p>
+        <p>
+          Os indicadores seguem as fichas de qualificação da RIPSA (Rede
+          Interagencial de Informações para a Saúde) e a Nota Técnica nº
+          51/2025-CGIAE/DAENT/SVSA/MS: padronização direta por idade, em 18
+          faixas etárias, tendo como padrão a população do Brasil em 2022. Taxas
+          brutas e padronizadas aparecem sempre lado a lado. Os denominadores
+          vêm das estimativas populacionais por município, sexo e idade do
+          Ministério da Saúde (SVSA), publicadas pelo DATASUS; somadas, elas
+          reproduzem exatamente a projeção do IBGE (revisão 2024) para o estado.
+        </p>
+
+        <p>O que muda em relação ao painel original:</p>
+        <ul class="flex list-disc flex-col gap-2 pl-4">
+          <li>
+            <strong>Geografia:</strong> o estado do Rio Grande do Sul e cada um dos
+            seus 497 municípios, por local de residência;
+          </li>
+          <li>
+            <strong>Mapa:</strong> as classes de cor são definidas por quebras naturais
+            de Jenks, em cinco faixas, e não por escala contínua;
+          </li>
+          <li>
+            <strong>Evolução:</strong> média móvel de três anos, média do período
+            e tendência linear opcionais, calculadas sobre a série exibida, seja do
+            estado, seja do município;
+          </li>
+          <li>
+            <strong>Cobertura do SIM:</strong> o indicador só existe por unidade da
+            federação, então é exibido apenas para o estado.
+          </li>
+        </ul>
+
+        <p>O painel também tem limitações que merecem registro:</p>
+        <ul class="flex list-disc flex-col gap-2 pl-4">
+          <li>
+            <strong>Municípios pequenos:</strong> com poucos óbitos por ano, as taxas
+            oscilam muito de um ano para outro. Leia sempre a taxa junto com o número
+            de óbitos, que aparece na dica do mapa e no resumo;
+          </li>
+          <li>
+            <strong>Início da série:</strong> a série começa em 2000, primeiro ano
+            coberto pelas estimativas populacionais usadas como denominador;
+          </li>
+          <li>
+            <strong>Dados preliminares:</strong> os dados de 2025 ainda são preliminares
+            e serão consolidados ao longo dos próximos meses. Eles estão incluídos,
+            com indicação visual do status preliminar;
+          </li>
+          <li>
+            <strong>Sub-registro:</strong> as taxas refletem os óbitos registrados
+            no SIM, sem correção de sub-registro.
+          </li>
+        </ul>
+      </section>
+
+      <section class="flex flex-col gap-3 text-gray-700 dark:text-gray-300">
+        <h2 class="text-xl font-bold lg:text-2xl">Créditos</h2>
+        <p>
+          O painel original, Causa Mortis, é de Celso Zanchetta Jr., Franklin
+          Weise e Pedro Veloso, e está publicado em <a
+            class="underline transition-opacity duration-200 hover:opacity-70"
+            href="https://causamortis.net"
+            target="_blank"
+            rel="noopener noreferrer">causamortis.net</a
+          > e no <a
+            class="underline transition-opacity duration-200 hover:opacity-70"
+            href="https://github.com/causa-mortis-brasil"
+            target="_blank"
+            rel="noopener noreferrer">GitHub</a
+          >, sob licença MIT. A metodologia, o pipeline e o código do site são
+          deles; esta réplica os aplica ao Rio Grande do Sul.
+        </p>
+        <p>
+          Os microdados originais devem ser atribuídos ao Ministério da Saúde
+          (SIM/DATASUS); as estimativas populacionais, ao Ministério da Saúde
+          (SVSA) e ao IBGE; a malha municipal, ao IBGE.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>

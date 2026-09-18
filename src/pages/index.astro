@@ -1,0 +1,33 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import Layout from "../components/Layout.astro";
+import MortalityExplorer from "../components/mortality/MortalityExplorer.astro";
+---
+
+<Layout>
+  <Header />
+
+  <main class="center-col gap-4">
+    <section
+      id="app-charts"
+      class="app-content-col app-gutter gap-6 py-6 pt-4 pb-2 lg:pt-6"
+    >
+      <h1 class="sr-only">
+        Mortalidade no Rio Grande do Sul, município por município
+      </h1>
+
+      <MortalityExplorer />
+    </section>
+
+    <section id="app-sobre" class="app-content-col app-gutter pb-12 sm:pb-16">
+      <p class="text-center text-sm text-gray-700 md:ml-17 dark:text-gray-300">
+        Para análise técnica e formulação de política pública, recomenda-se a
+        extração dos dados diretamente no DataSUS (SIM e estimativas
+        populacionais por município).
+      </p>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

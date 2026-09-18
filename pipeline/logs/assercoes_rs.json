@@ -1,0 +1,93 @@
+[
+  {
+    "assercao": "soma dos pesos == 210862983",
+    "tipo": "identidade",
+    "violacoes": 0,
+    "de": 1,
+    "exemplo": ""
+  },
+  {
+    "assercao": "taxa bruta reproduzível",
+    "tipo": "identidade",
+    "violacoes": 0,
+    "de": 38844,
+    "exemplo": ""
+  },
+  {
+    "assercao": "taxa padronizada reproduzível",
+    "tipo": "identidade",
+    "violacoes": 0,
+    "de": 38844,
+    "exemplo": ""
+  },
+  {
+    "assercao": "sum(population_by_age) == overall[4]",
+    "tipo": "identidade",
+    "violacoes": 0,
+    "de": 38844,
+    "exemplo": ""
+  },
+  {
+    "assercao": "sum(capitulos) == overall[1]",
+    "tipo": "identidade",
+    "violacoes": 0,
+    "de": 38844,
+    "exemplo": ""
+  },
+  {
+    "assercao": "sum(tipos externos) == cap. externas",
+    "tipo": "identidade",
+    "violacoes": 0,
+    "de": 38844,
+    "exemplo": ""
+  },
+  {
+    "assercao": "sum(meios) == agressao",
+    "tipo": "identidade",
+    "violacoes": 0,
+    "de": 38844,
+    "exemplo": ""
+  },
+  {
+    "assercao": "sum(subgrupos cardio) == cap. IX",
+    "tipo": "identidade",
+    "violacoes": 0,
+    "de": 38844,
+    "exemplo": ""
+  },
+  {
+    "assercao": "sum(malignas) <= cap. II",
+    "tipo": "identidade",
+    "violacoes": 0,
+    "de": 38844,
+    "exemplo": ""
+  },
+  {
+    "assercao": "soma municípios (+ fora da lista) == RS",
+    "tipo": "identidade",
+    "violacoes": 0,
+    "de": 78,
+    "exemplo": ""
+  },
+  {
+    "assercao": "subgrupos respiratórios (RS) sem salto > 40%",
+    "tipo": "alerta",
+    "violacoes": 6,
+    "de": 8,
+    "exemplo": "Vias aéreas superiores: salto de 117% em 2014"
+  },
+  {
+    "assercao": "células null só onde o município não existia (Pinto Bandeira: 11 anos × 3 sexos)",
+    "tipo": "identidade",
+    "violacoes": 0,
+    "de": 1,
+    "exemplo": "33 nulas"
+  },
+  {
+    "assercao": "fatia RS idêntica ao original (12 tabelas × 78 recortes)",
+    "tipo": "identidade",
+    "violacoes": 0,
+    "de": 936,
+    "exemplo": ""
+  }
+]

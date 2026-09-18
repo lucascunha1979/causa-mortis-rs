@@ -1,0 +1,41 @@
+---
+import CustomSelect from "./CustomSelect.astro";
+---
+
+<div data-filter-bar class="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+  <div id="filter-location-wrap" class="w-full sm:w-auto">
+    <CustomSelect
+      id="filter-location"
+      name="Território"
+      class="w-full"
+      searchable
+    />
+  </div>
+  <div id="filter-cause-group-wrap" class="w-full sm:w-auto">
+    <CustomSelect
+      id="filter-cause-group"
+      name="Grupo de causas"
+      class="w-full"
+    />
+  </div>
+
+  {
+    [
+      { id: "filter-detail", name: "Detalhe" },
+      { id: "filter-external", name: "Tipo de causa externa" },
+      { id: "filter-assault", name: "Meio utilizado" },
+    ].map(({ id, name }) => (
+      <div id={`${id}-wrap`} hidden class="w-full sm:w-auto">
+        <CustomSelect id={id} name={name} class="w-full" />
+      </div>
+    ))
+  }
+
+  <div id="filter-sex-wrap" class="w-full sm:w-auto">
+    <CustomSelect id="filter-sex" name="Sexo" class="w-full" />
+  </div>
+
+  <div id="filter-pyramid-measure-wrap" hidden class="w-full sm:w-auto">
+    <CustomSelect id="filter-pyramid-measure" name="Medida" class="w-full" />
+  </div>
+</div>

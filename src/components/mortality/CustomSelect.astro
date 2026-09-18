@@ -1,0 +1,59 @@
+---
+import { ChevronDown } from "@lucide/astro";
+
+interface Props {
+  id: string;
+  name: string;
+  class?: string;
+  searchable?: boolean;
+}
+
+const { id, name, class: className, searchable = false } = Astro.props;
+---
+
+<div id={id} class:list={["custom-select group", className]}>
+  <button
+    type="button"
+    data-select-trigger
+    class="custom-select-trigger"
+    aria-haspopup="listbox"
+    aria-expanded="false"
+    aria-controls={`${id}-listbox`}
+  >
+    <span class="sr-only">{name}:</span>
+    <span data-select-value class="custom-select-value"></span>
+    <ChevronDown class="custom-select-chevron size-4" />
+  </button>
+  {
+    searchable ? (
+      <div data-select-popover hidden class="custom-select-listbox">
+        <input
+          type="search"
+          data-select-search
+          class="custom-select-search"
+          placeholder="Buscar município…"
+          aria-label={`Buscar ${name}`}
+          autocomplete="off"
+        />
+        <ul
+          id={`${id}-listbox`}
+          data-select-listbox
+          role="listbox"
+          tabindex="-1"
+          aria-label={name}
+          class="custom-select-options"
+        />
+      </div>
+    ) : (
+      <ul
+        id={`${id}-listbox`}
+        data-select-listbox
+        role="listbox"
+        tabindex="-1"
+        aria-label={name}
+        hidden
+        class="custom-select-listbox"
+      />
+    )
+  }
+</div>

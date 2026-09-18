@@ -1,0 +1,172 @@
+---
+import {
+  Check,
+  CircleAlert,
+  Download,
+  FileSpreadsheet,
+  FileText,
+  Image,
+  LoaderCircle,
+  Share2,
+} from "@lucide/astro";
+import ChartFullscreenToggle from "./ChartFullscreenToggle.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  chartId: string;
+  chartName: string;
+  height: string;
+  active?: boolean;
+  fullscreenToggle?: boolean;
+  standalone?: boolean;
+  padding?: string;
+}
+
+const {
+  title,
+  description,
+  chartId,
+  chartName,
+  height,
+  active = false,
+  fullscreenToggle = false,
+  standalone = false,
+  padding = "p-4",
+} = Astro.props;
+---
+
+<div
+  id={`panel-${chartName}`}
+  class:list={[
+    "chart-card flex flex-col gap-4 rounded-ui-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800",
+    padding,
+  ]}
+  data-chart-panel={chartName}
+  role={standalone ? undefined : "tabpanel"}
+  aria-labelledby={standalone ? undefined : `tab-${chartName}`}
+  hidden={!active}
+>
+  <div class="flex flex-col items-center gap-3">
+    <div
+      class="flex max-w-232 flex-col items-center gap-1 self-center text-center"
+    >
+      <h2 data-chart-title class="text-sm font-bold uppercase sm:text-xl">
+        <span data-chart-title-line1>{title}</span>{" "}<span
+          data-chart-title-line2
+          class="before:mr-1.5 before:content-['\00b7'] empty:hidden data-stacked:before:invisible"
+        ></span>
+      </h2>
+      <p
+        data-chart-subtitle
+        class="text-xs font-medium text-primary-600 empty:hidden sm:text-sm dark:text-primary-300"
+      >
+      </p>
+      {
+        description ? (
+          <p
+            data-chart-description
+            class="text-sm text-gray-600 dark:text-gray-400"
+          >
+            {description}
+          </p>
+        ) : (
+          ""
+        )
+      }
+    </div>
+    {
+      Astro.slots.has("controls") && (
+        <div class="flex flex-wrap items-center justify-end gap-3 self-end sm:text-nowrap">
+          <slot name="controls" />
+        </div>
+      )
+    }
+  </div>
+  <div
+    id={chartId}
+    class={`relative w-full landscape:max-h-[70vh] ${height}`}
+    data-chart={chartName}
+  >
+    <div
+      class="chart-placeholder absolute inset-0 animate-pulse rounded-ui-md bg-gray-200/70 motion-reduce:animate-none dark:bg-gray-700/50"
+    >
+      <span class="sr-only">Carregando gráfico…</span>
+    </div>
+  </div>
+
+  <div
+    class="flex flex-wrap items-end justify-between gap-3 border-t border-gray-100 pt-2 text-xs text-gray-500 dark:border-gray-700 dark:text-gray-400"
+  >
+    <div class="flex flex-col gap-0.5">
+      <span>Fonte: SIM/DATASUS · IBGE</span>
+      <a
+        href="/notas"
+        class="text-primary-600 hover:underline dark:text-primary-300"
+      >
+        Notas técnicas e metodologia
+      </a>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
+      <details data-chart-export class="group relative">
+        <summary class="chart-export-trigger" data-chart-export-trigger>
+          <span data-export-icon-default>
+            <Download class="size-4" />
+          </span>
+          <span data-export-icon-loading hidden>
+            <LoaderCircle class="size-4 animate-spin" />
+          </span>
+          <span data-export-icon-error hidden>
+            <CircleAlert class="size-4 text-red-500" />
+          </span>
+          Exportar
+        </summary>
+        <div
+          class="chart-export-menu right-auto left-0 sm:right-0 sm:left-auto"
+        >
+          <button
+            type="button"
+            data-export-format="png"
+            class="chart-export-item"
+          >
+            <Image class="size-4" />
+            Imagem (PNG)
+          </button>
+          <button
+            type="button"
+            data-export-format="csv"
+            class="chart-export-item"
+          >
+            <FileText class="size-4" />
+            Dados (CSV)
+          </button>
+          <button
+            type="button"
+            data-export-format="xlsx"
+            class="chart-export-item"
+          >
+            <FileSpreadsheet class="size-4" />
+            Dados (XLSX)
+          </button>
+        </div>
+      </details>
+
+      <button
+        type="button"
+        data-chart-share
+        class="chart-export-trigger shrink-0"
+      >
+        <span data-chart-share-icon-default>
+          <Share2 class="size-4" />
+        </span>
+        <span data-chart-share-icon-success hidden>
+          <Check class="size-4" />
+        </span>
+        <span data-chart-share-label>Compartilhar</span>
+      </button>
+
+      {fullscreenToggle && <ChartFullscreenToggle />}
+    </div>
+  </div>
+</div>
