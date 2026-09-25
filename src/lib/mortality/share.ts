@@ -1,8 +1,16 @@
+import { ageBands, DEFAULT_AGE_BAND } from "./age-bands";
 import type { FiltersStore } from "./filters";
-import type { Dimensions, Filters, PyramidMeasure, Sex } from "./types";
+import type {
+  AgeMeasure,
+  Dimensions,
+  Filters,
+  PyramidMeasure,
+  Sex,
+} from "./types";
 
 const SEX_VALUES: Sex[] = ["Ambos", "Homens", "Mulheres"];
 const PYRAMID_MEASURE_VALUES: PyramidMeasure[] = ["deaths", "rate"];
+const AGE_MEASURE_VALUES: AgeMeasure[] = ["rate", "deaths", "share"];
 
 export interface SharedState {
   filters: Filters;
@@ -26,6 +34,8 @@ export function parseSharedState(
   const externalCauseType = params.get("ext");
   const assaultMeans = params.get("assault");
   const measure = params.get("measure");
+  const ageBand = params.get("band");
+  const ageMeasure = params.get("ameasure");
 
   const yearEnd = dimensions.years.includes(end)
     ? end
@@ -64,6 +74,14 @@ export function parseSharedState(
       measure && PYRAMID_MEASURE_VALUES.includes(measure as PyramidMeasure)
         ? (measure as PyramidMeasure)
         : "rate",
+    ageBand:
+      ageBand && ageBands(dimensions).some((band) => band.id === ageBand)
+        ? ageBand
+        : DEFAULT_AGE_BAND,
+    ageMeasure:
+      ageMeasure && AGE_MEASURE_VALUES.includes(ageMeasure as AgeMeasure)
+        ? (ageMeasure as AgeMeasure)
+        : "rate",
   };
 
   return { filters, tab: params.get("tab") };
@@ -84,6 +102,10 @@ export function buildShareUrl(filters: Filters, chartName: string): string {
     params.set("to", String(filters.yearEnd));
   }
   if (chartName === "pyramid") params.set("measure", filters.pyramidMeasure);
+  if (chartName === "age-profile") {
+    params.set("band", filters.ageBand);
+    params.set("ameasure", filters.ageMeasure);
+  }
 
   const url = new URL(window.location.href);
   url.search = params.toString();

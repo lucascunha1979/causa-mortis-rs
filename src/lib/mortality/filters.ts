@@ -1,4 +1,4 @@
-import type { Filters, PyramidMeasure, Sex } from "./types";
+import type { AgeMeasure, Filters, PyramidMeasure, Sex } from "./types";
 
 export const DEFAULT_YEAR = 2024;
 
@@ -106,6 +106,14 @@ export class FiltersStore {
   setPyramidMeasure(pyramidMeasure: PyramidMeasure): void {
     this.#set({ ...this.#filters, pyramidMeasure });
   }
+
+  setAgeBand(ageBand: string): void {
+    this.#set({ ...this.#filters, ageBand });
+  }
+
+  setAgeMeasure(ageMeasure: AgeMeasure): void {
+    this.#set({ ...this.#filters, ageMeasure });
+  }
 }
 
 export function isYearOnlyChange(
@@ -118,6 +126,8 @@ export function isYearOnlyChange(
     previous.location === current.location &&
     previous.sex === current.sex &&
     previous.pyramidMeasure === current.pyramidMeasure &&
+    previous.ageBand === current.ageBand &&
+    previous.ageMeasure === current.ageMeasure &&
     previous.causeGroup === current.causeGroup &&
     previous.detailedSubgroup === current.detailedSubgroup &&
     previous.externalCauseType === current.externalCauseType &&

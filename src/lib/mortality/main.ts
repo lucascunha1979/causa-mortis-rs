@@ -4,12 +4,19 @@ import {
   switchChartFullscreenTo,
 } from "./chart-fullscreen";
 import { sexLabel } from "./chart-titles";
+import { ageBands } from "./age-bands";
 import { createCustomSelect, type CustomSelect } from "./custom-select";
 import { fetchDimensions } from "./dimensions";
 import { DEFAULT_YEAR, FiltersStore } from "./filters";
 import { parseSharedState } from "./share";
 import { initSummaryStats } from "./summary-stats";
-import type { Dimensions, Filters, PyramidMeasure, Sex } from "./types";
+import type {
+  AgeMeasure,
+  Dimensions,
+  Filters,
+  PyramidMeasure,
+  Sex,
+} from "./types";
 
 interface ChartModule {
   init(
@@ -25,6 +32,8 @@ const CHART_LOADERS: Record<string, () => Promise<ChartModule>> = {
   map: () => import("./charts/map"),
   "age-composition": () => import("./charts/age-composition"),
   pyramid: () => import("./charts/pyramid"),
+  "age-profile": () => import("./charts/age-profile"),
+  "age-evolution": () => import("./charts/age-evolution"),
 };
 
 const DEFAULT_CHART_TAB = "causes";
@@ -86,6 +95,31 @@ function setupPyramidMeasureSelect(
     { value: "deaths", label: "Óbitos absolutos" },
   ]);
   store.subscribe((filters) => select.setValue(filters.pyramidMeasure));
+}
+
+function setupAgeSelects(
+  scope: ParentNode,
+  dimensions: Dimensions,
+  store: FiltersStore,
+): void {
+  const bandSelect = customSelect(scope, `#filter-age-band`, (value) =>
+    store.setAgeBand(value),
+  );
+  bandSelect.setOptions(
+    ageBands(dimensions).map((band) => ({ value: band.id, label: band.label })),
+  );
+  const measureSelect = customSelect(scope, `#filter-age-measure`, (value) =>
+    store.setAgeMeasure(value as AgeMeasure),
+  );
+  measureSelect.setOptions([
+    { value: "rate", label: "Taxa por 100 mil" },
+    { value: "deaths", label: "Óbitos" },
+    { value: "share", label: "% dos óbitos da faixa" },
+  ]);
+  store.subscribe((filters) => {
+    bandSelect.setValue(filters.ageBand);
+    measureSelect.setValue(filters.ageMeasure);
+  });
 }
 
 const YEAR_PLAYBACK_INTERVAL_MS = 900;
@@ -397,6 +431,9 @@ function setupChartTabs(
       '[id^="filter-pyramid-measure-wrap"]',
     ),
   ];
+  const ageWraps = [
+    ...document.querySelectorAll<HTMLElement>('[id^="filter-age-wrap"]'),
+  ];
 
   let panelsHeight: number | null = null;
   let settlePanelsHeight: (() => void) | null = null;
@@ -457,12 +494,17 @@ function setupChartTabs(
     setYearRangeMode(target === "evolution");
 
     for (const wrap of sexWraps)
-      wrap.toggleAttribute("hidden", target === "pyramid");
+      wrap.toggleAttribute(
+        "hidden",
+        target === "pyramid" || target === "age-profile",
+      );
     for (const wrap of locationWraps)
       wrap.toggleAttribute("hidden", target === "map");
     for (const wrap of causeGroupWraps) wrap.hidden = false;
     for (const wrap of pyramidMeasureWraps)
       wrap.toggleAttribute("hidden", target !== "pyramid");
+    for (const wrap of ageWraps)
+      wrap.toggleAttribute("hidden", target !== "age-profile");
     setDetailFiltersEnabled(target !== "age-composition");
   }
 
@@ -519,6 +561,7 @@ export async function mountMortalityExplorer(root: HTMLElement): Promise<void> {
   setupLocationSelect(root, dimensions, store);
   setupSexSelect(root, dimensions, store);
   setupPyramidMeasureSelect(root, store);
+  setupAgeSelects(root, dimensions, store);
   const setYearRangeMode = setupYearControl(root, dimensions, store, playback);
   causeFilterControllers.push(setupCauseFilters(root, dimensions, store));
 

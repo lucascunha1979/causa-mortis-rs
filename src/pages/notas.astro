@@ -118,6 +118,16 @@ const bibtex = `@software{causamortisrs2026,
             intervalo de anos escolhido, para o território e o filtro de causa
             selecionados.
           </p>
+          <p>
+            Na aba Faixa etária, os valores são calculados dentro da faixa
+            escolhida: óbitos da causa na faixa, taxa por 100 mil habitantes da
+            faixa (óbitos ÷ população da faixa) e percentual dos óbitos da
+            faixa. Nos grupos amplos (1 a 14, 15 a 29, 30 a 59 e 60 a 79 anos),
+            óbitos e população das faixas quinquenais são somados antes da
+            divisão. Homens, Mulheres e Todos aparecem lado a lado; Todos inclui
+            os óbitos com sexo ignorado. Os óbitos com idade ignorada não entram
+            nessa aba.
+          </p>
         </div>
       </div>
     </div>
@@ -254,6 +264,7 @@ const bibtex = `@software{causamortisrs2026,
     </div>
 
     <script>
+      import { DEFAULT_AGE_BAND } from "../lib/mortality/age-bands";
       import { fetchCoverage } from "../lib/mortality/data";
       import { fetchDimensions } from "../lib/mortality/dimensions";
       import { FiltersStore } from "../lib/mortality/filters";
@@ -282,6 +293,8 @@ const bibtex = `@software{causamortisrs2026,
           externalCauseType: null,
           assaultMeans: null,
           pyramidMeasure: "rate",
+          ageBand: DEFAULT_AGE_BAND,
+          ageMeasure: "rate",
         });
 
         const playback = main.createYearPlayback(dimensions, store);

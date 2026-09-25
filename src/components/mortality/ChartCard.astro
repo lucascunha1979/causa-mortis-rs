@@ -17,6 +17,7 @@ interface Props {
   description?: string;
   chartId: string;
   chartName: string;
+  panel?: string;
   height: string;
   active?: boolean;
   fullscreenToggle?: boolean;
@@ -29,6 +30,7 @@ const {
   description,
   chartId,
   chartName,
+  panel = chartName,
   height,
   active = false,
   fullscreenToggle = false,
@@ -43,7 +45,7 @@ const {
     "chart-card flex flex-col gap-4 rounded-ui-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800",
     padding,
   ]}
-  data-chart-panel={chartName}
+  data-chart-panel={panel}
   role={standalone ? undefined : "tabpanel"}
   aria-labelledby={standalone ? undefined : `tab-${chartName}`}
   hidden={!active}
@@ -95,6 +97,8 @@ const {
       <span class="sr-only">Carregando gráfico…</span>
     </div>
   </div>
+
+  <slot />
 
   <div
     class="flex flex-wrap items-end justify-between gap-3 border-t border-gray-100 pt-2 text-xs text-gray-500 dark:border-gray-700 dark:text-gray-400"

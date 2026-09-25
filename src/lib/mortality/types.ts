@@ -98,6 +98,7 @@ export interface MortalityIndexed {
 
 export type Sex = "Ambos" | "Homens" | "Mulheres";
 export type PyramidMeasure = "deaths" | "rate";
+export type AgeMeasure = "deaths" | "rate" | "share";
 
 export interface CauseFilter {
   causeGroup: string | null;
@@ -113,4 +114,6 @@ export interface Filters extends CauseFilter {
   yearStart: number;
   yearEnd: number;
   pyramidMeasure: PyramidMeasure;
+  ageBand: string;
+  ageMeasure: AgeMeasure;
 }

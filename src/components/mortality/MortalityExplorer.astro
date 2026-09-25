@@ -1,5 +1,11 @@
 ---
-import { ChartArea, ChartLine, LayoutPanelLeft, Map } from "@lucide/astro";
+import {
+  ChartArea,
+  ChartBarBig,
+  ChartLine,
+  LayoutPanelLeft,
+  Map,
+} from "@lucide/astro";
 import OneTwoThreeIcon from "../icons/OneTwoThreeIcon.astro";
 import PopulationPyramidIcon from "../icons/PopulationPyramidIcon.astro";
 import ChartCard from "./ChartCard.astro";
@@ -18,6 +24,7 @@ const charts = [
     icon: ChartArea,
   },
   { name: "pyramid", label: "Sexo", icon: PopulationPyramidIcon },
+  { name: "age-profile", label: "Faixa etária", icon: ChartBarBig },
   { name: "stats", label: "Resumo", icon: OneTwoThreeIcon },
 ];
 ---
@@ -199,6 +206,26 @@ const charts = [
         chartId="chart-pyramid"
         chartName="pyramid"
         height="h-96 md:h-120"
+        fullscreenToggle
+      />
+
+      <ChartCard
+        title="Mortalidade por faixa etária"
+        chartId="chart-age-profile"
+        chartName="age-profile"
+        height="h-108 md:h-128"
+        fullscreenToggle
+      >
+        <div data-age-profile-table class="overflow-x-auto text-sm"></div>
+      </ChartCard>
+
+      <ChartCard
+        title="Evolução na faixa etária"
+        chartId="chart-age-evolution"
+        chartName="age-evolution"
+        panel="age-profile"
+        height="h-96 md:h-120"
+        standalone
         fullscreenToggle
       />
     </div>

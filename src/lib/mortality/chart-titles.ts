@@ -145,3 +145,25 @@ export function pyramidChartTitle(
     line2: `${yearLabel(filters.year, dimensions)} · ${locationLabel(dimensions, filters.location)}`,
   };
 }
+
+export function ageProfileChartTitle(
+  filters: Filters,
+  dimensions: Dimensions,
+  bandName: string,
+): ChartTitle {
+  return {
+    line1: `Mortalidade na faixa de ${bandName} - ${causePathLabel(filters)}`,
+    line2: `${yearLabel(filters.year, dimensions)} · ${locationLabel(dimensions, filters.location)}`,
+  };
+}
+
+export function ageEvolutionChartTitle(
+  filters: Filters,
+  dimensions: Dimensions,
+  bandName: string,
+): ChartTitle {
+  return {
+    line1: `Evolução na faixa de ${bandName} - ${causePathLabel(filters)}`,
+    line2: `${Math.min(...dimensions.years)}-${Math.max(...dimensions.years)} · ${locationLabel(dimensions, filters.location)}`,
+  };
+}
