@@ -1,4 +1,5 @@
 import type { FeatureCollection } from "geojson";
+import { withBase } from "../base-path";
 import manifest from "./data-manifest.json";
 import type {
   OverallTable,
@@ -20,7 +21,7 @@ import type {
   CoverageTable,
 } from "./types";
 
-const BASE_URL = "/data/mortality";
+const BASE_URL = withBase("/data/mortality");
 const BY_LOCATION_URL = `${BASE_URL}/by-location/${manifest.mortalityVersion}`;
 
 const cache = new Map<string, Promise<unknown>>();
@@ -112,7 +113,7 @@ export const fetchPopulationByAgeForLocation = (
 let geoJsonPromise: Promise<FeatureCollection> | null = null;
 
 export function fetchMunicipalitiesGeoJson(): Promise<FeatureCollection> {
-  geoJsonPromise ??= fetch(`/data/geo/${manifest.geoFile}`)
+  geoJsonPromise ??= fetch(withBase(`/data/geo/${manifest.geoFile}`))
     .then((response) => response.json() as Promise<FeatureCollection>)
     .catch((error: unknown) => {
       geoJsonPromise = null;

@@ -1,5 +1,7 @@
 # Causa Mortis RS
 
+**Site:** https://lucascunha1979.github.io/causa-mortis-rs/
+
 Réplica geográfica do painel [Causa Mortis](https://causamortis.net) (Zanchetta Jr., Weise e Veloso, licença MIT) para o Rio Grande do Sul e seus 497 municípios, construída com [Astro](https://astro.build) e [ECharts](https://echarts.apache.org/). Mesma lógica, mesmas regras de classificação e os mesmos gráficos do original; muda só a dimensão geográfica, e os dados foram extraídos de novo, diretamente das fontes oficiais.
 
 ## Como citar
@@ -34,3 +36,7 @@ npm run build
 ```
 
 Este painel tem finalidade didática e de divulgação. Para análise técnica e formulação de política pública, recomenda-se a extração dos dados diretamente no DataSUS.
+
+## Publicação
+
+O site é publicado no GitHub Pages pelo workflow `.github/workflows/deploy-pages.yml` a cada push na `main`. O build recebe `SITE_URL` e `BASE_PATH` do próprio Pages (o site fica em `/causa-mortis-rs/`); todos os caminhos internos passam por `withBase()` (`src/lib/base-path.ts`). Sem essas variáveis, o build continua servindo na raiz, como no original.

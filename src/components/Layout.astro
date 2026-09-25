@@ -3,6 +3,7 @@ import { Font } from "astro:assets";
 import "../styles/global.css";
 import Loader from "./Loader.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
+import { withBase } from "../lib/base-path";
 
 interface Props {
   title?: string;
@@ -15,7 +16,8 @@ const defaultDescription =
 const { title = "Causa Mortis RS", description = defaultDescription } =
   Astro.props;
 
-const socialImage = new URL("/og-image.png", Astro.site);
+const socialImage = new URL(withBase("/og-image.png"), Astro.site);
+const isVercel = Boolean(process.env.VERCEL);
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -27,8 +29,8 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
       document.documentElement.dataset.theme =
         storedTheme === "light" ? "light" : "dark";
     </script>
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href={withBase("/favicon.ico")} />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#050a14" />
@@ -37,7 +39,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
     <title>{title}</title>
 
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Causa Mortis" />
+    <meta property="og:site_name" content="Causa Mortis RS" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -61,6 +63,6 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 
     <slot />
 
-    <SpeedInsights />
+    {isVercel && <SpeedInsights />}
   </body>
 </html>

@@ -9,6 +9,7 @@ import {
   LoaderCircle,
   Share2,
 } from "@lucide/astro";
+import { withBase } from "../../lib/base-path";
 import ChartFullscreenToggle from "./ChartFullscreenToggle.astro";
 
 interface Props {
@@ -101,7 +102,7 @@ const {
     <div class="flex flex-col gap-0.5">
       <span>Fonte: SIM/DATASUS · IBGE</span>
       <a
-        href="/notas"
+        href={withBase("/notas")}
         class="text-primary-600 hover:underline dark:text-primary-300"
       >
         Notas técnicas e metodologia

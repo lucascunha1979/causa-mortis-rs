@@ -9,7 +9,8 @@ const sora = (weight) =>
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://causa-mortis-rs.vercel.app",
+  site: process.env.SITE_URL ?? "https://lucascunha1979.github.io",
+  base: process.env.BASE_PATH ?? "/",
   build: {
     inlineStylesheets: "always",
   },

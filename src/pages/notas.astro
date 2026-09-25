@@ -5,6 +5,7 @@ import Header from "../components/Header.astro";
 import Layout from "../components/Layout.astro";
 import QualityChartCard from "../components/mortality/QualityChartCard.astro";
 import YearControl from "../components/mortality/YearControl.astro";
+import { withBase } from "../lib/base-path";
 import { formatAccessDate } from "../lib/mortality/format";
 
 const bibtex = `@software{causamortisrs2026,
@@ -223,7 +224,7 @@ const bibtex = `@software{causamortisrs2026,
             preliminares mudam. Os dados tratados podem ser citados a partir da
             página <a
               class="underline transition-opacity duration-200 hover:opacity-70"
-              href="/dados">Dados</a
+              href={withBase("/dados")}>Dados</a
             >; os microdados originais devem ser atribuídos ao Ministério da
             Saúde (SIM/DATASUS) e ao IBGE.
           </p>
