@@ -167,3 +167,13 @@ export function ageEvolutionChartTitle(
     line2: `${Math.min(...dimensions.years)}-${Math.max(...dimensions.years)} · ${locationLabel(dimensions, filters.location)}`,
   };
 }
+
+export function smrChartTitle(
+  filters: Filters,
+  periodLabel: string,
+): ChartTitle {
+  return {
+    line1: `Mortalidade observada × esperada - ${causePathLabel(filters)}`,
+    line2: `${periodLabel} · ${sexLabel(filters.sex)}`,
+  };
+}

@@ -14,7 +14,7 @@ import {
 import { setupChartFullscreen } from "../chart-fullscreen";
 import { subscribeWhenVisible, type RenderOptions } from "../chart-visibility";
 import { causesChartTitle, setChartTitle } from "../chart-titles";
-import { causeGroupsForDetail, indexOf } from "../dimensions";
+import { ASSAULT_TYPE, causeGroupsForDetail, indexOf } from "../dimensions";
 import {
   fetchDeathsByAssaultMeansForLocation,
   fetchDeathsByCauseGroupForLocation,
@@ -316,7 +316,7 @@ export function init(
                     stdRate: extStdRate,
                     causeGroupIndex,
                   };
-                  if (externalCauseType === "Agressão") {
+                  if (externalCauseType === ASSAULT_TYPE) {
                     const assaultChildren = withPercent(
                       dimensions.assault_means
                         .map((means, meansIndex) => {

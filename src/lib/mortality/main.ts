@@ -6,9 +6,9 @@ import {
 import { sexLabel } from "./chart-titles";
 import { ageBands } from "./age-bands";
 import { createCustomSelect, type CustomSelect } from "./custom-select";
-import { fetchDimensions } from "./dimensions";
+import { ASSAULT_TYPE, fetchDimensions } from "./dimensions";
 import { DEFAULT_YEAR, FiltersStore } from "./filters";
-import { parseSharedState } from "./share";
+import { parseSharedState, SMR_PERIOD_VALUES } from "./share";
 import { initSummaryStats } from "./summary-stats";
 import type {
   AgeMeasure,
@@ -16,6 +16,7 @@ import type {
   Filters,
   PyramidMeasure,
   Sex,
+  SmrPeriod,
 } from "./types";
 
 interface ChartModule {
@@ -34,6 +35,7 @@ const CHART_LOADERS: Record<string, () => Promise<ChartModule>> = {
   pyramid: () => import("./charts/pyramid"),
   "age-profile": () => import("./charts/age-profile"),
   "age-evolution": () => import("./charts/age-evolution"),
+  smr: () => import("./charts/smr"),
 };
 
 const DEFAULT_CHART_TAB = "causes";
@@ -120,6 +122,19 @@ function setupAgeSelects(
     bandSelect.setValue(filters.ageBand);
     measureSelect.setValue(filters.ageMeasure);
   });
+}
+
+function setupSmrPeriodSelect(scope: ParentNode, store: FiltersStore): void {
+  const select = customSelect(scope, `#filter-smr-period`, (value) =>
+    store.setSmrPeriod(Number(value) as SmrPeriod),
+  );
+  select.setOptions(
+    SMR_PERIOD_VALUES.map((period) => ({
+      value: String(period),
+      label: period === 1 ? "Só o ano" : `Últimos ${period} anos`,
+    })),
+  );
+  store.subscribe((filters) => select.setValue(String(filters.smrPeriod)));
 }
 
 const YEAR_PLAYBACK_INTERVAL_MS = 900;
@@ -374,7 +389,7 @@ function setupCauseFilters(
     const showExternal =
       detailFiltersEnabled && filters.causeGroup === "Causas externas";
     const showAssault =
-      showExternal && filters.externalCauseType === "Agressão";
+      showExternal && filters.externalCauseType === ASSAULT_TYPE;
 
     detailWrap?.toggleAttribute("hidden", !showDetail);
     externalWrap?.toggleAttribute("hidden", !showExternal);
@@ -433,6 +448,9 @@ function setupChartTabs(
   ];
   const ageWraps = [
     ...document.querySelectorAll<HTMLElement>('[id^="filter-age-wrap"]'),
+  ];
+  const smrWraps = [
+    ...document.querySelectorAll<HTMLElement>('[id^="filter-smr-wrap"]'),
   ];
 
   let panelsHeight: number | null = null;
@@ -505,6 +523,8 @@ function setupChartTabs(
       wrap.toggleAttribute("hidden", target !== "pyramid");
     for (const wrap of ageWraps)
       wrap.toggleAttribute("hidden", target !== "age-profile");
+    for (const wrap of smrWraps)
+      wrap.toggleAttribute("hidden", target !== "smr");
     setDetailFiltersEnabled(target !== "age-composition");
   }
 
@@ -562,6 +582,7 @@ export async function mountMortalityExplorer(root: HTMLElement): Promise<void> {
   setupSexSelect(root, dimensions, store);
   setupPyramidMeasureSelect(root, store);
   setupAgeSelects(root, dimensions, store);
+  setupSmrPeriodSelect(root, store);
   const setYearRangeMode = setupYearControl(root, dimensions, store, playback);
   causeFilterControllers.push(setupCauseFilters(root, dimensions, store));
 

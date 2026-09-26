@@ -120,6 +120,15 @@ const dataFiles: DataFile[] = [
       "Indicador de cobertura do registro de óbitos por território e ano.",
   },
   {
+    jsonHref: withBase("/data/mortality/smr_overall.json"),
+    jsonFilePath: "public/data/mortality/smr_overall.json",
+    csvHref: withBase("/data/mortality-csv/smr_overall.csv"),
+    csvFilePath: "public/data/mortality-csv/smr_overall.csv",
+    label: "Razão de mortalidade padronizada",
+    description:
+      "Óbitos observados e esperados (taxas do RS) por território, sexo e ano, todas as causas.",
+  },
+  {
     jsonHref: withBase("/data/geo/rs-municipalities.geojson"),
     jsonFilePath: "public/data/geo/rs-municipalities.geojson",
     label: "Malha dos municípios",

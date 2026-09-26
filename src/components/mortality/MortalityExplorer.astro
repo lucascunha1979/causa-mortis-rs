@@ -5,6 +5,7 @@ import {
   ChartLine,
   LayoutPanelLeft,
   Map,
+  Scale,
 } from "@lucide/astro";
 import OneTwoThreeIcon from "../icons/OneTwoThreeIcon.astro";
 import PopulationPyramidIcon from "../icons/PopulationPyramidIcon.astro";
@@ -25,6 +26,7 @@ const charts = [
   },
   { name: "pyramid", label: "Sexo", icon: PopulationPyramidIcon },
   { name: "age-profile", label: "Faixa etária", icon: ChartBarBig },
+  { name: "smr", label: "Observado × esperado", icon: Scale },
   { name: "stats", label: "Resumo", icon: OneTwoThreeIcon },
 ];
 ---
@@ -228,6 +230,60 @@ const charts = [
         standalone
         fullscreenToggle
       />
+
+      <ChartCard
+        title="Mortalidade observada × esperada"
+        chartId="chart-smr"
+        chartName="smr"
+        height="h-108 md:h-128"
+        fullscreenToggle
+      >
+        <p
+          data-smr-summary
+          class="rounded-ui-md bg-primary-50 p-3 text-sm text-gray-800 dark:bg-primary-950 dark:text-gray-100"
+        >
+        </p>
+        <details
+          class="rounded-ui-md border border-gray-200 p-3 text-sm text-gray-700 dark:border-gray-700 dark:text-gray-300"
+        >
+          <summary class="cursor-pointer font-semibold">
+            Como ler este mapa
+          </summary>
+          <div class="flex flex-col gap-2 pt-2">
+            <p>
+              Para cada município, o painel calcula quantos óbitos seriam
+              esperados se ele tivesse as mesmas taxas de mortalidade do Rio
+              Grande do Sul em cada faixa etária, com a população e a estrutura
+              de idade dele. A razão entre os óbitos observados e os esperados é
+              a razão de mortalidade padronizada (SMR).
+            </p>
+            <p>
+              Razão 1 significa exatamente o esperado. Razão 1,20 significa 20%
+              mais óbitos que o esperado; 0,85, 15% menos. Como a idade já está
+              levada em conta, um município não aparece acima só por ter
+              população mais velha.
+            </p>
+            <p>
+              O intervalo de confiança de 95% mostra a margem de incerteza.
+              Quando o intervalo inteiro fica acima de 1 (ou abaixo), a
+              diferença é considerada estatisticamente significativa e o mapa
+              usa a cor forte. Cores claras indicam diferenças que podem ser
+              flutuação ao acaso, o que é comum em municípios pequenos. Somar 3
+              ou 5 anos no filtro "Período" estreita os intervalos.
+            </p>
+            <p>
+              A razão compara cada município com o estado, não os municípios
+              entre si: dois municípios com a mesma razão podem ter taxas
+              diferentes, porque suas estruturas etárias são diferentes.
+            </p>
+          </div>
+        </details>
+        <div
+          data-smr-table
+          class="max-h-96 overflow-auto rounded-ui-md border border-gray-200 dark:border-gray-700"
+        >
+        </div>
+      </ChartCard>
     </div>
   </div>
 

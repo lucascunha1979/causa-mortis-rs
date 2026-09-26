@@ -1,6 +1,8 @@
 import { withBase } from "../base-path";
 import type { Dimensions } from "./types";
 
+export const ASSAULT_TYPE = "Agressões";
+
 const DIMENSIONS_URL = withBase("/data/mortality/dimensions.json");
 
 let dimensionsPromise: Promise<Dimensions> | null = null;

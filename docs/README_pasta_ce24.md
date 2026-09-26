@@ -16,5 +16,5 @@ Réplica do painel Causa Mortis (https://www.causamortis.net/, licença MIT) par
 
 Ordem de execução do pipeline (Python 3.11+, pandas, pyarrow, ijson, datasus-dbc, dbfread):
 `02_ingerir_rs.py 2000 … 2025` (exceto 2022/2023) → `02b_ingerir_2022_2023_rs.py` → `02c_populacao_municipal.py`
-→ `03_04_classificar_agregar_rs_v2.py` → `05_06_montar_indexed_rs_v3.py` → `08_assercoes_rs_v2.py`
+→ `03_04_classificar_agregar_rs_v3.py` → `05_06_montar_indexed_rs_v4.py` (grava `mortality-indexed_v2.json`) → `08_assercoes_rs_v3.py`
 → `cd site && npm run data:generate && npm run build`.

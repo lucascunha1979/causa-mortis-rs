@@ -25,6 +25,9 @@ export type CauseRateEntry = [
   stdRate: number,
 ];
 export type AgeSeries = (number | null)[];
+export type SmrEntry = [observed: number, expected: number];
+export type SmrOverallTable = (SmrEntry | null)[][][];
+export type SmrByCauseTable = ((SmrEntry | null)[] | null)[][][];
 export type CoverageTable = (number | null)[][];
 
 export type OverallLocationTable = (OverallEntry | null)[][];
@@ -94,11 +97,17 @@ export interface MortalityIndexed {
   deaths_by_detailed_subgroup: DeathsByDetailedSubgroupTable;
   deaths_by_detailed_subgroup_age: DeathsByDetailedSubgroupAgeTable;
   coverage: CoverageTable;
+  smr_overall: SmrOverallTable;
+  smr_by_cause_group: SmrByCauseTable;
+  smr_by_external_cause: SmrByCauseTable;
+  smr_by_assault_means: SmrByCauseTable;
+  smr_by_detailed_subgroup: SmrByCauseTable;
 }
 
 export type Sex = "Ambos" | "Homens" | "Mulheres";
 export type PyramidMeasure = "deaths" | "rate";
 export type AgeMeasure = "deaths" | "rate" | "share";
+export type SmrPeriod = 1 | 3 | 5;
 
 export interface CauseFilter {
   causeGroup: string | null;
@@ -116,4 +125,5 @@ export interface Filters extends CauseFilter {
   pyramidMeasure: PyramidMeasure;
   ageBand: string;
   ageMeasure: AgeMeasure;
+  smrPeriod: SmrPeriod;
 }

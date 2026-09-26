@@ -12,7 +12,7 @@ import {
   fetchOverallForLocation,
   fetchPopulationByAgeForLocation,
 } from "./data";
-import { causeGroupsForDetail, indexOf } from "./dimensions";
+import { ASSAULT_TYPE, causeGroupsForDetail, indexOf } from "./dimensions";
 import { crudeRate } from "./rate";
 import type {
   AgeMeasure,
@@ -69,7 +69,7 @@ export function ageCauses(
   if (leaf) return [{ label: leaf, level: selected }];
 
   if (externalCauseType) {
-    if (externalCauseType !== "Agressão")
+    if (externalCauseType !== ASSAULT_TYPE)
       return [{ label: externalCauseType, level: selected }];
     return dimensions.assault_means.map((means) => ({
       label: means,

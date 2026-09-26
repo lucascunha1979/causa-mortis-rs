@@ -22,6 +22,8 @@ Este painel é uma réplica geográfica do **Causa Mortis** (ZANCHETTA JR., Cels
 - Territórios: `RS` + 497 municípios (chave = 6 primeiros dígitos do código IBGE).
 - Mapa: cinco classes por quebras naturais de Jenks (`src/lib/mortality/jenks.ts`), sem rótulos por polígono.
 - Evolução: média móvel de 3 anos, média do período e tendência linear opcionais.
+- Causas externas detalhadas pelos 9 agrupamentos do capítulo XX da CID-10 (como no TabNet), em vez dos 5 tipos da RIPSA.
+- Nova aba "Observado × esperado": razão de mortalidade padronizada (padronização indireta, referência = RS), com IC 95% (Byar), mapa por significância, período de 1, 3 ou 5 anos e tabela exportável.
 - Nova aba "Faixa etária": filtro com as 18 faixas e grupos amplos (1–14, 15–29, 30–59, 60–79); ranking de causas (e subgrupos/tipos/meios) por sexo em óbitos, taxa por 100 mil da faixa ou % da faixa, tabela exportável e evolução 2000–2025 dentro da faixa.
 - Cobertura do SIM: série do estado em linha (`/notas`), em vez de mapa por UF.
 - Seletor de território com busca.

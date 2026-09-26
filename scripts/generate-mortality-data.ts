@@ -20,6 +20,7 @@ import type {
   MortalityIndexed,
   OverallTable,
   PopulationByAgeTable,
+  SmrOverallTable,
 } from "../src/lib/mortality/types.ts";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -71,6 +72,11 @@ const JSON_TABLES = [
   "deaths_by_age",
   "population_by_age",
   "coverage",
+  "smr_overall",
+  "smr_by_cause_group",
+  "smr_by_external_cause",
+  "smr_by_assault_means",
+  "smr_by_detailed_subgroup",
 ] as const;
 
 const jsonStats = JSON_TABLES.map((table) => {
@@ -264,6 +270,34 @@ function buildCoverageCsv(table: CoverageTable): string {
   );
 }
 
+function buildSmrOverallCsv(table: SmrOverallTable): string {
+  const rows: (string | number)[][] = [];
+  forEachEntry(table, (location, sex, year, entry) => {
+    const [observed, expected] = entry;
+    rows.push([
+      location,
+      locationName(location),
+      sex,
+      year,
+      observed,
+      expected,
+      expected > 0 ? Math.round((observed / expected) * 1000) / 1000 : "",
+    ]);
+  });
+  return toCsv(
+    [
+      "Território",
+      "Nome do território",
+      "Sexo",
+      "Ano",
+      "Óbitos observados (idade informada)",
+      "Óbitos esperados (taxas do RS)",
+      "Razão de mortalidade padronizada",
+    ],
+    rows,
+  );
+}
+
 const friendlyCsvs: { table: string; content: string }[] = [
   { table: "overall", content: buildOverallCsv(indexed.overall) },
   {
@@ -303,6 +337,7 @@ const friendlyCsvs: { table: string; content: string }[] = [
     content: buildAgeTableCsv(indexed.population_by_age, "População"),
   },
   { table: "coverage", content: buildCoverageCsv(indexed.coverage) },
+  { table: "smr_overall", content: buildSmrOverallCsv(indexed.smr_overall) },
 ];
 
 const encoder = new TextEncoder();

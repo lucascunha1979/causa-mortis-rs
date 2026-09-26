@@ -6,11 +6,13 @@ import type {
   Filters,
   PyramidMeasure,
   Sex,
+  SmrPeriod,
 } from "./types";
 
 const SEX_VALUES: Sex[] = ["Ambos", "Homens", "Mulheres"];
 const PYRAMID_MEASURE_VALUES: PyramidMeasure[] = ["deaths", "rate"];
 const AGE_MEASURE_VALUES: AgeMeasure[] = ["rate", "deaths", "share"];
+export const SMR_PERIOD_VALUES: SmrPeriod[] = [1, 3, 5];
 
 export interface SharedState {
   filters: Filters;
@@ -36,6 +38,7 @@ export function parseSharedState(
   const measure = params.get("measure");
   const ageBand = params.get("band");
   const ageMeasure = params.get("ameasure");
+  const smrPeriod = Number(params.get("smrp"));
 
   const yearEnd = dimensions.years.includes(end)
     ? end
@@ -82,6 +85,9 @@ export function parseSharedState(
       ageMeasure && AGE_MEASURE_VALUES.includes(ageMeasure as AgeMeasure)
         ? (ageMeasure as AgeMeasure)
         : "rate",
+    smrPeriod: SMR_PERIOD_VALUES.includes(smrPeriod as SmrPeriod)
+      ? (smrPeriod as SmrPeriod)
+      : 3,
   };
 
   return { filters, tab: params.get("tab") };
@@ -102,6 +108,7 @@ export function buildShareUrl(filters: Filters, chartName: string): string {
     params.set("to", String(filters.yearEnd));
   }
   if (chartName === "pyramid") params.set("measure", filters.pyramidMeasure);
+  if (chartName === "smr") params.set("smrp", String(filters.smrPeriod));
   if (chartName === "age-profile") {
     params.set("band", filters.ageBand);
     params.set("ameasure", filters.ageMeasure);

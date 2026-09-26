@@ -19,6 +19,8 @@ import type {
   DeathsByAgeLocationTable,
   PopulationByAgeLocationTable,
   CoverageTable,
+  SmrByCauseTable,
+  SmrOverallTable,
 } from "./types";
 
 const BASE_URL = withBase("/data/mortality");
@@ -65,6 +67,16 @@ export const fetchDeathsByDetailedSubgroup =
     fetchTable("deaths_by_detailed_subgroup");
 export const fetchCoverage = (): Promise<CoverageTable> =>
   fetchTable("coverage");
+export const fetchSmrOverall = (): Promise<SmrOverallTable> =>
+  fetchTable("smr_overall");
+export const fetchSmrByCauseGroup = (): Promise<SmrByCauseTable> =>
+  fetchTable("smr_by_cause_group");
+export const fetchSmrByExternalCause = (): Promise<SmrByCauseTable> =>
+  fetchTable("smr_by_external_cause");
+export const fetchSmrByAssaultMeans = (): Promise<SmrByCauseTable> =>
+  fetchTable("smr_by_assault_means");
+export const fetchSmrByDetailedSubgroup = (): Promise<SmrByCauseTable> =>
+  fetchTable("smr_by_detailed_subgroup");
 
 export const fetchOverallForLocation = (
   location: string,

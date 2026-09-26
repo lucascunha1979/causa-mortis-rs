@@ -76,10 +76,25 @@ const bibtex = `@software{causamortisrs2026,
             download).
           </li>
           <li>
-            <strong>Agrupamento de causas.</strong> Segue as fichas de qualificação
-            da RIPSA: MRT.3.01 (grupos de causas), MRT.4.01 a MRT.4.04 (causas externas
-            por tipo e meio da agressão), MRT.5.02 (neoplasias malignas) e MRT.5.04
-            (doenças do aparelho circulatório).
+            <strong>Agrupamento de causas.</strong> Como no painel original, segue
+            as fichas de qualificação da RIPSA: MRT.3.01 (grupos de causas), MRT.4
+            (meios da agressão), MRT.5.02 (neoplasias malignas) e MRT.5.04 (doenças
+            do aparelho circulatório).
+          </li>
+          <li>
+            <strong>Causas externas.</strong> Diferentemente do original, que usa
+            os tipos da RIPSA, o detalhamento das causas externas segue os 9 agrupamentos
+            do capítulo XX da CID-10, os mesmos do TabNet: acidentes de transporte
+            (V01–V99), outras causas externas de lesões acidentais (W00–X59), lesões
+            autoprovocadas voluntariamente (X60–X84), agressões (X85–Y09), eventos
+            cuja intenção é indeterminada (Y10–Y34), intervenções legais e operações
+            de guerra (Y35–Y36), complicações de assistência médica e cirúrgica (Y40–Y84),
+            sequelas de causas externas (Y85–Y89) e fatores suplementares relacionados
+            a outras causas (Y90–Y98). As lesões de trânsito (V01–V89) ficam dentro
+            de acidentes de transporte. A taxa das lesões autoprovocadas continua
+            usando como denominador a população de 5 anos ou mais. O último agrupamento
+            reúne códigos suplementares, que em regra não são usados como causa básica;
+            por isso aparece com zero óbitos.
           </li>
         </ul>
       </div>
@@ -117,6 +132,21 @@ const bibtex = `@software{causamortisrs2026,
             tendência linear (mínimos quadrados) são calculadas sobre o
             intervalo de anos escolhido, para o território e o filtro de causa
             selecionados.
+          </p>
+          <p>
+            Na aba Observado × esperado, cada município é comparado com o estado
+            pela razão de mortalidade padronizada (SMR), obtida por padronização
+            indireta. Os óbitos esperados são a soma, nas 18 faixas etárias, da
+            população do município multiplicada pela taxa específica do Rio
+            Grande do Sul na mesma faixa, sexo, ano e causa. A razão é
+            observados ÷ esperados, contando só os óbitos com idade informada,
+            de modo que no estado ela vale exatamente 1. No período de 3 ou 5
+            anos, observados e esperados de cada ano são somados antes da
+            divisão. O intervalo de confiança de 95% trata os óbitos observados
+            como uma contagem de Poisson e usa a aproximação de Byar; a
+            diferença é chamada de significativa quando o intervalo não contém
+            1. A razão compara cada município com o estado, e não os municípios
+            entre si.
           </p>
           <p>
             Na aba Faixa etária, os valores são calculados dentro da faixa
@@ -295,6 +325,7 @@ const bibtex = `@software{causamortisrs2026,
           pyramidMeasure: "rate",
           ageBand: DEFAULT_AGE_BAND,
           ageMeasure: "rate",
+          smrPeriod: 3,
         });
 
         const playback = main.createYearPlayback(dimensions, store);
