@@ -47,6 +47,7 @@ export function buildFilenameBase(chartSlug: string, filters: Filters): string {
     slugifyValue(filters.location),
     slugifyValue(filters.sex),
     String(filters.year),
+    ...(filters.place === "ocor" ? ["ocorrencia"] : []),
   ].join("-");
 }
 

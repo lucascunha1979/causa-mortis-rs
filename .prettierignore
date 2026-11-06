@@ -5,4 +5,5 @@ node_modules
 public/data
 data/rs-municipalities-simplified.geojson
 data/mortality-indexed.json
+data/mortality-indexed-ocorrencia.json
 vercel.json

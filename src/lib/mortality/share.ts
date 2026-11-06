@@ -4,6 +4,8 @@ import type {
   AgeMeasure,
   Dimensions,
   Filters,
+  FlowDirection,
+  Place,
   PyramidMeasure,
   Sex,
   SmrPeriod,
@@ -13,6 +15,9 @@ const SEX_VALUES: Sex[] = ["Ambos", "Homens", "Mulheres"];
 const PYRAMID_MEASURE_VALUES: PyramidMeasure[] = ["deaths", "rate"];
 const AGE_MEASURE_VALUES: AgeMeasure[] = ["rate", "deaths", "share"];
 export const SMR_PERIOD_VALUES: SmrPeriod[] = [1, 3, 5];
+export const PLACE_VALUES: Place[] = ["res", "ocor"];
+export const FLOW_DIRECTION_VALUES: FlowDirection[] = ["both", "out", "in"];
+export const FLOW_MIN_VALUES = [1, 5, 10, 25, 50, 100];
 
 export interface SharedState {
   filters: Filters;
@@ -39,6 +44,9 @@ export function parseSharedState(
   const ageBand = params.get("band");
   const ageMeasure = params.get("ameasure");
   const smrPeriod = Number(params.get("smrp"));
+  const place = params.get("local");
+  const flowDirection = params.get("fdir");
+  const flowMin = Number(params.get("fmin"));
 
   const yearEnd = dimensions.years.includes(end)
     ? end
@@ -88,6 +96,14 @@ export function parseSharedState(
     smrPeriod: SMR_PERIOD_VALUES.includes(smrPeriod as SmrPeriod)
       ? (smrPeriod as SmrPeriod)
       : 3,
+    place:
+      place && PLACE_VALUES.includes(place as Place) ? (place as Place) : "res",
+    flowDirection:
+      flowDirection &&
+      FLOW_DIRECTION_VALUES.includes(flowDirection as FlowDirection)
+        ? (flowDirection as FlowDirection)
+        : "both",
+    flowMin: FLOW_MIN_VALUES.includes(flowMin) ? flowMin : 1,
   };
 
   return { filters, tab: params.get("tab") };
@@ -108,7 +124,13 @@ export function buildShareUrl(filters: Filters, chartName: string): string {
     params.set("to", String(filters.yearEnd));
   }
   if (chartName === "pyramid") params.set("measure", filters.pyramidMeasure);
+  if (filters.place !== "res" && chartName !== "flows")
+    params.set("local", filters.place);
   if (chartName === "smr") params.set("smrp", String(filters.smrPeriod));
+  if (chartName === "flows") {
+    params.set("fdir", filters.flowDirection);
+    params.set("fmin", String(filters.flowMin));
+  }
   if (chartName === "age-profile") {
     params.set("band", filters.ageBand);
     params.set("ameasure", filters.ageMeasure);

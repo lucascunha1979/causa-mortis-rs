@@ -19,12 +19,32 @@ import type {
   DeathsByAgeLocationTable,
   PopulationByAgeLocationTable,
   CoverageTable,
+  FlowsMeta,
+  FlowsYear,
+  Place,
   SmrByCauseTable,
   SmrOverallTable,
 } from "./types";
 
-const BASE_URL = withBase("/data/mortality");
-const BY_LOCATION_URL = `${BASE_URL}/by-location/${manifest.mortalityVersion}`;
+const BASE_URLS: Record<Place, string> = {
+  res: withBase("/data/mortality"),
+  ocor: withBase("/data/mortality/ocorrencia"),
+};
+const VERSIONS: Record<Place, string> = {
+  res: manifest.mortalityVersion,
+  ocor: manifest.occurrenceVersion,
+};
+const FLOWS_URL = withBase(`/data/mortality/fluxos/${manifest.flowsVersion}`);
+
+let currentPlace: Place = "res";
+
+export function setDataPlace(place: Place): void {
+  currentPlace = place;
+}
+
+export function getDataPlace(): Place {
+  return currentPlace;
+}
 
 const cache = new Map<string, Promise<unknown>>();
 
@@ -43,15 +63,24 @@ function fetchJson<T>(url: string, cacheKey: string): Promise<T> {
 }
 
 function fetchTable<T>(name: string): Promise<T> {
-  return fetchJson(`${BASE_URL}/${name}.json`, name);
+  return fetchJson(
+    `${BASE_URLS[currentPlace]}/${name}.json`,
+    `${currentPlace}:${name}`,
+  );
 }
 
 function fetchLocationTable<T>(name: string, location: string): Promise<T> {
   return fetchJson(
-    `${BY_LOCATION_URL}/${name}/${location}.json`,
-    `${name}:${location}`,
+    `${BASE_URLS[currentPlace]}/by-location/${VERSIONS[currentPlace]}/${name}/${location}.json`,
+    `${currentPlace}:${name}:${location}`,
   );
 }
+
+export const fetchFlowsYear = (year: number): Promise<FlowsYear> =>
+  fetchJson(`${FLOWS_URL}/${year}.json`, `flows:${year}`);
+
+export const fetchFlowsMeta = (): Promise<FlowsMeta> =>
+  fetchJson(`${FLOWS_URL}/endpoints.json`, "flows:endpoints");
 
 export const fetchOverall = (): Promise<OverallTable> => fetchTable("overall");
 export const fetchDeathsByCauseGroup = (): Promise<DeathsByCauseGroupTable> =>

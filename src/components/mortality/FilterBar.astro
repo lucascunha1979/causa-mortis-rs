@@ -3,6 +3,9 @@ import CustomSelect from "./CustomSelect.astro";
 ---
 
 <div data-filter-bar class="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+  <div id="filter-place-wrap" class="w-full sm:w-auto">
+    <CustomSelect id="filter-place" name="Local do óbito" class="w-full" />
+  </div>
   <div id="filter-location-wrap" class="w-full sm:w-auto">
     <CustomSelect
       id="filter-location"
@@ -49,5 +52,13 @@ import CustomSelect from "./CustomSelect.astro";
 
   <div id="filter-smr-wrap" hidden class="w-full sm:w-auto">
     <CustomSelect id="filter-smr-period" name="Período" class="w-full" />
+  </div>
+
+  <div id="filter-flow-wrap-direction" hidden class="w-full sm:w-auto">
+    <CustomSelect id="filter-flow-direction" name="Sentido" class="w-full" />
+  </div>
+
+  <div id="filter-flow-wrap-min" hidden class="w-full sm:w-auto">
+    <CustomSelect id="filter-flow-min" name="Ligações" class="w-full" />
   </div>
 </div>

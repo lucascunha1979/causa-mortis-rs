@@ -92,7 +92,10 @@ export function initSummaryStats(
     if (coverageValue && coverageSubtitle) {
       if (coverage == null) {
         coverageValue.textContent = "—";
-        coverageSubtitle.textContent = "sem dado publicado";
+        coverageSubtitle.textContent =
+          filters.place === "ocor"
+            ? "indicador existe só por residência"
+            : "sem dado publicado";
       } else {
         coverageValue.textContent = `${formatRate(coverage)}%`;
         coverageSubtitle.textContent = "óbitos captados";

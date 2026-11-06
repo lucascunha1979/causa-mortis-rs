@@ -26,6 +26,9 @@ jobs:
       - id: pages
         uses: actions/configure-pages@v5
       - run: npm ci
+      - run: npm run data:generate
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
       - run: npm run build
         env:
           SITE_URL: ${{ steps.pages.outputs.origin }}

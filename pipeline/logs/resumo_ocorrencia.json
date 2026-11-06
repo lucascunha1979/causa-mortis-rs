@@ -1,0 +1,188 @@
+{
+  "2000": {
+    "obitos": 67925,
+    "idade_ignorada": 54,
+    "sexo_ignorado": 21,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2001": {
+    "obitos": 68250,
+    "idade_ignorada": 65,
+    "sexo_ignorado": 4,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2002": {
+    "obitos": 69355,
+    "idade_ignorada": 38,
+    "sexo_ignorado": 3,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2003": {
+    "obitos": 70482,
+    "idade_ignorada": 48,
+    "sexo_ignorado": 7,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2004": {
+    "obitos": 72171,
+    "idade_ignorada": 45,
+    "sexo_ignorado": 8,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2005": {
+    "obitos": 71182,
+    "idade_ignorada": 46,
+    "sexo_ignorado": 7,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2006": {
+    "obitos": 72315,
+    "idade_ignorada": 56,
+    "sexo_ignorado": 2,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2007": {
+    "obitos": 75180,
+    "idade_ignorada": 91,
+    "sexo_ignorado": 11,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2008": {
+    "obitos": 73981,
+    "idade_ignorada": 130,
+    "sexo_ignorado": 8,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2009": {
+    "obitos": 76756,
+    "idade_ignorada": 76,
+    "sexo_ignorado": 1,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2010": {
+    "obitos": 77942,
+    "idade_ignorada": 73,
+    "sexo_ignorado": 7,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2011": {
+    "obitos": 80068,
+    "idade_ignorada": 91,
+    "sexo_ignorado": 17,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2012": {
+    "obitos": 79422,
+    "idade_ignorada": 76,
+    "sexo_ignorado": 12,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2013": {
+    "obitos": 82933,
+    "idade_ignorada": 79,
+    "sexo_ignorado": 19,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2014": {
+    "obitos": 82062,
+    "idade_ignorada": 52,
+    "sexo_ignorado": 9,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2015": {
+    "obitos": 82327,
+    "idade_ignorada": 58,
+    "sexo_ignorado": 9,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2016": {
+    "obitos": 87497,
+    "idade_ignorada": 50,
+    "sexo_ignorado": 14,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2017": {
+    "obitos": 86139,
+    "idade_ignorada": 55,
+    "sexo_ignorado": 4,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2018": {
+    "obitos": 88473,
+    "idade_ignorada": 73,
+    "sexo_ignorado": 63,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2019": {
+    "obitos": 89119,
+    "idade_ignorada": 51,
+    "sexo_ignorado": 13,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2020": {
+    "obitos": 92616,
+    "idade_ignorada": 49,
+    "sexo_ignorado": 13,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2021": {
+    "obitos": 117544,
+    "idade_ignorada": 66,
+    "sexo_ignorado": 50,
+    "fora_da_lista": {
+      "430000": 1
+    },
+    "causabas_nula": 0
+  },
+  "2022": {
+    "obitos": 103934,
+    "idade_ignorada": 73,
+    "sexo_ignorado": 18,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2023": {
+    "obitos": 93379,
+    "idade_ignorada": 59,
+    "sexo_ignorado": 10,
+    "fora_da_lista": {
+      "430000": 1
+    },
+    "causabas_nula": 0
+  },
+  "2024": {
+    "obitos": 101281,
+    "idade_ignorada": 43,
+    "sexo_ignorado": 13,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  },
+  "2025": {
+    "obitos": 95435,
+    "idade_ignorada": 35,
+    "sexo_ignorado": 17,
+    "fora_da_lista": {},
+    "causabas_nula": 0
+  }
+}

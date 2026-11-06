@@ -25,17 +25,23 @@ import type {
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const SRC_INDEXED = path.join(HERE, "..", "data", "mortality-indexed.json");
-const SRC_INDEXED_GZ = `${SRC_INDEXED}.gz`;
+const SRC_INDEXED_OCCURRENCE = path.join(
+  HERE,
+  "..",
+  "data",
+  "mortality-indexed-ocorrencia.json",
+);
+const SRC_FLOWS_GZ = path.join(HERE, "..", "data", "fluxos_rs.json.gz");
 const SRC_GEO_SIMPLIFIED = path.join(
   HERE,
   "..",
   "data",
   "rs-municipalities-simplified.geojson",
 );
-const JSON_OUT_DIR = path.join(HERE, "..", "public", "data", "mortality");
+const MORTALITY_OUT_DIR = path.join(HERE, "..", "public", "data", "mortality");
 const CSV_OUT_DIR = path.join(HERE, "..", "public", "data", "mortality-csv");
 const GEO_OUT_DIR = path.join(HERE, "..", "public", "data", "geo");
-const BY_LOCATION_OUT_DIR = path.join(JSON_OUT_DIR, "by-location");
+const FLOWS_OUT_DIR = path.join(MORTALITY_OUT_DIR, "fluxos");
 const MANIFEST_OUT_FILE = path.join(
   HERE,
   "..",
@@ -45,14 +51,17 @@ const MANIFEST_OUT_FILE = path.join(
   "data-manifest.json",
 );
 
-mkdirSync(JSON_OUT_DIR, { recursive: true });
+mkdirSync(MORTALITY_OUT_DIR, { recursive: true });
 mkdirSync(CSV_OUT_DIR, { recursive: true });
 
-const indexedRaw = existsSync(SRC_INDEXED)
-  ? readFileSync(SRC_INDEXED, "utf-8")
-  : gunzipSync(readFileSync(SRC_INDEXED_GZ)).toString("utf-8");
-const indexed: MortalityIndexed = JSON.parse(indexedRaw);
-const dimensions = indexed.dimensions;
+function readIndexedRaw(source: string): string {
+  return existsSync(source)
+    ? readFileSync(source, "utf-8")
+    : gunzipSync(readFileSync(`${source}.gz`)).toString("utf-8");
+}
+
+let dimensions!: MortalityIndexed["dimensions"];
+const encoder = new TextEncoder();
 
 function shortHash(content: string | Buffer): string {
   return createHash("sha256").update(content).digest("hex").slice(0, 10);
@@ -78,12 +87,6 @@ const JSON_TABLES = [
   "smr_by_assault_means",
   "smr_by_detailed_subgroup",
 ] as const;
-
-const jsonStats = JSON_TABLES.map((table) => {
-  const file = path.join(JSON_OUT_DIR, `${table}.json`);
-  writeFileSync(file, JSON.stringify(indexed[table]), "utf-8");
-  return { table, bytes: statSync(file).size };
-});
 
 function csvEscape(value: string | number): string {
   const text = String(value);
@@ -298,126 +301,252 @@ function buildSmrOverallCsv(table: SmrOverallTable): string {
   );
 }
 
-const friendlyCsvs: { table: string; content: string }[] = [
-  { table: "overall", content: buildOverallCsv(indexed.overall) },
-  {
-    table: "deaths_by_cause_group",
-    content: buildCauseGroupCsv(indexed.deaths_by_cause_group),
-  },
-  {
-    table: "deaths_by_external_cause",
-    content: buildRateEntryTableCsv(
-      indexed.deaths_by_external_cause,
-      dimensions.external_cause_types,
-      "Tipo de causa externa",
-    ),
-  },
-  {
-    table: "deaths_by_assault_means",
-    content: buildRateEntryTableCsv(
-      indexed.deaths_by_assault_means,
-      dimensions.assault_means,
-      "Meio de agressão",
-    ),
-  },
-  {
-    table: "deaths_by_detailed_subgroup",
-    content: buildRateEntryTableCsv(
-      indexed.deaths_by_detailed_subgroup,
-      dimensions.detailed_subgroups,
-      "Subgrupo detalhado",
-    ),
-  },
-  {
-    table: "deaths_by_age",
-    content: buildAgeTableCsv(indexed.deaths_by_age, "Óbitos"),
-  },
-  {
-    table: "population_by_age",
-    content: buildAgeTableCsv(indexed.population_by_age, "População"),
-  },
-  { table: "coverage", content: buildCoverageCsv(indexed.coverage) },
-  { table: "smr_overall", content: buildSmrOverallCsv(indexed.smr_overall) },
-];
+function generateMode(
+  label: string,
+  source: string,
+  jsonOutDir: string,
+  writeCsvFiles: boolean,
+  zipName: string,
+): string {
+  mkdirSync(jsonOutDir, { recursive: true });
+  const indexedRaw = readIndexedRaw(source);
+  const indexed: MortalityIndexed = JSON.parse(indexedRaw);
+  dimensions = indexed.dimensions;
 
-const encoder = new TextEncoder();
-const csvStats = friendlyCsvs.map(({ table, content }) => {
-  const file = path.join(CSV_OUT_DIR, `${table}.csv`);
-  writeFileSync(file, content, "utf-8");
-  return { table, bytes: statSync(file).size };
-});
+  const jsonStats = JSON_TABLES.map((table) => {
+    const file = path.join(jsonOutDir, `${table}.json`);
+    writeFileSync(file, JSON.stringify(indexed[table]), "utf-8");
+    return { table, bytes: statSync(file).size };
+  });
 
-const bundle = buildZip(
-  friendlyCsvs.map(({ table, content }) => {
-    const data = encoder.encode(content);
-    return {
-      name: `${table}.csv`,
-      data,
-      deflated: new Uint8Array(deflateRawSync(data)),
-    };
-  }),
-);
-const bundleFile = path.join(
-  CSV_OUT_DIR,
+  const friendlyCsvs: { table: string; content: string }[] = [
+    { table: "overall", content: buildOverallCsv(indexed.overall) },
+    {
+      table: "deaths_by_cause_group",
+      content: buildCauseGroupCsv(indexed.deaths_by_cause_group),
+    },
+    {
+      table: "deaths_by_external_cause",
+      content: buildRateEntryTableCsv(
+        indexed.deaths_by_external_cause,
+        dimensions.external_cause_types,
+        "Tipo de causa externa",
+      ),
+    },
+    {
+      table: "deaths_by_assault_means",
+      content: buildRateEntryTableCsv(
+        indexed.deaths_by_assault_means,
+        dimensions.assault_means,
+        "Meio de agressão",
+      ),
+    },
+    {
+      table: "deaths_by_detailed_subgroup",
+      content: buildRateEntryTableCsv(
+        indexed.deaths_by_detailed_subgroup,
+        dimensions.detailed_subgroups,
+        "Subgrupo detalhado",
+      ),
+    },
+    {
+      table: "deaths_by_age",
+      content: buildAgeTableCsv(indexed.deaths_by_age, "Óbitos"),
+    },
+    {
+      table: "population_by_age",
+      content: buildAgeTableCsv(indexed.population_by_age, "População"),
+    },
+    { table: "coverage", content: buildCoverageCsv(indexed.coverage) },
+    { table: "smr_overall", content: buildSmrOverallCsv(indexed.smr_overall) },
+  ];
+
+  const csvStats = writeCsvFiles
+    ? friendlyCsvs.map(({ table, content }) => {
+        const file = path.join(CSV_OUT_DIR, `${table}.csv`);
+        writeFileSync(file, content, "utf-8");
+        return { table, bytes: statSync(file).size };
+      })
+    : [];
+
+  const bundle = buildZip(
+    friendlyCsvs.map(({ table, content }) => {
+      const data = encoder.encode(content);
+      return {
+        name: `${table}.csv`,
+        data,
+        deflated: new Uint8Array(deflateRawSync(data)),
+      };
+    }),
+  );
+  const bundleFile = path.join(CSV_OUT_DIR, zipName);
+  writeFileSync(bundleFile, bundle);
+
+  const totalJsonBytes = jsonStats.reduce((sum, s) => sum + s.bytes, 0);
+  const totalCsvBytes = csvStats.reduce((sum, s) => sum + s.bytes, 0);
+
+  console.log(
+    `OK — ${label} -> ${path.relative(path.join(HERE, ".."), jsonOutDir)}/*.json`,
+  );
+  console.log(
+    `  ${jsonStats.length} tabelas, ${(totalJsonBytes / 1e6).toFixed(2)} MB total`,
+  );
+  for (const s of jsonStats) {
+    console.log(
+      `    ${s.table.padEnd(32)} ${(s.bytes / 1e3).toFixed(1).padStart(9)} KB`,
+    );
+  }
+
+  console.log(`OK — ${label} -> public/data/mortality-csv/`);
+  if (csvStats.length > 0)
+    console.log(
+      `  ${csvStats.length} tabelas, ${(totalCsvBytes / 1e6).toFixed(2)} MB total`,
+    );
+  for (const s of csvStats) {
+    console.log(
+      `    ${s.table.padEnd(32)} ${(s.bytes / 1e3).toFixed(1).padStart(9)} KB`,
+    );
+  }
+  console.log(
+    `  ${path.relative(path.join(HERE, ".."), bundleFile)} ${(statSync(bundleFile).size / 1e6).toFixed(2)} MB`,
+  );
+
+  const LOCATION_SHARDED_TABLES = JSON_TABLES.filter(
+    (table) => table !== "dimensions" && table !== "coverage",
+  );
+
+  const mortalityVersion = shortHash(indexedRaw);
+  const byLocationOutDir = path.join(jsonOutDir, "by-location");
+  const versionDir = path.join(byLocationOutDir, mortalityVersion);
+  rmSync(byLocationOutDir, { recursive: true, force: true });
+
+  let shardCount = 0;
+  let shardBytes = 0;
+  for (const table of LOCATION_SHARDED_TABLES) {
+    const tableDir = path.join(versionDir, table);
+    mkdirSync(tableDir, { recursive: true });
+    const fullTable = indexed[table] as unknown[];
+    dimensions.locations.forEach((location, locationIndex) => {
+      const file = path.join(tableDir, `${location}.json`);
+      writeFileSync(file, JSON.stringify(fullTable[locationIndex] ?? []));
+      shardCount += 1;
+      shardBytes += statSync(file).size;
+    });
+  }
+
+  console.log(
+    `OK — ${label} -> ${path.relative(path.join(HERE, ".."), jsonOutDir)}/by-location/${mortalityVersion}/`,
+  );
+  console.log(
+    `  ${LOCATION_SHARDED_TABLES.length} tabelas × ${dimensions.locations.length} territórios = ${shardCount} arquivos, ${(shardBytes / 1e6).toFixed(2)} MB total`,
+  );
+
+  return mortalityVersion;
+}
+
+const mortalityVersion = generateMode(
+  "data/mortality-indexed.json",
+  SRC_INDEXED,
+  MORTALITY_OUT_DIR,
+  true,
   "causa-mortis-rs-dados-completos.zip",
 );
-writeFileSync(bundleFile, bundle);
-
-const totalJsonBytes = jsonStats.reduce((sum, s) => sum + s.bytes, 0);
-const totalCsvBytes = csvStats.reduce((sum, s) => sum + s.bytes, 0);
-
-console.log(`OK — data/mortality-indexed.json -> public/data/mortality/*.json`);
-console.log(
-  `  ${jsonStats.length} tabelas, ${(totalJsonBytes / 1e6).toFixed(2)} MB total`,
+const occurrenceVersion = generateMode(
+  "data/mortality-indexed-ocorrencia.json",
+  SRC_INDEXED_OCCURRENCE,
+  path.join(MORTALITY_OUT_DIR, "ocorrencia"),
+  false,
+  "causa-mortis-rs-dados-completos-ocorrencia.zip",
 );
-for (const s of jsonStats) {
-  console.log(
-    `    ${s.table.padEnd(32)} ${(s.bytes / 1e3).toFixed(1).padStart(9)} KB`,
+
+interface FlowsSource {
+  endpoints: string[];
+  endpoint_names: string[];
+  years: number[];
+  rows: Record<string, number[][]>;
+}
+
+const flowsRaw = gunzipSync(readFileSync(SRC_FLOWS_GZ)).toString("utf-8");
+const flows: FlowsSource = JSON.parse(flowsRaw);
+const flowsVersion = shortHash(flowsRaw);
+const flowsVersionDir = path.join(FLOWS_OUT_DIR, flowsVersion);
+rmSync(FLOWS_OUT_DIR, { recursive: true, force: true });
+mkdirSync(flowsVersionDir, { recursive: true });
+writeFileSync(
+  path.join(flowsVersionDir, "endpoints.json"),
+  JSON.stringify({
+    endpoints: flows.endpoints,
+    endpoint_names: flows.endpoint_names,
+    municipality_count: flows.endpoints.indexOf("RS?"),
+  }),
+);
+let flowsBytes = 0;
+for (const year of flows.years) {
+  const file = path.join(flowsVersionDir, `${year}.json`);
+  writeFileSync(
+    file,
+    JSON.stringify({ year, rows: flows.rows[String(year)] ?? [] }),
   );
+  flowsBytes += statSync(file).size;
 }
-
-console.log(
-  `OK — data/mortality-indexed.json -> public/data/mortality-csv/*.csv`,
-);
-console.log(
-  `  ${csvStats.length} tabelas, ${(totalCsvBytes / 1e6).toFixed(2)} MB total`,
-);
-for (const s of csvStats) {
-  console.log(
-    `    ${s.table.padEnd(32)} ${(s.bytes / 1e3).toFixed(1).padStart(9)} KB`,
-  );
+const flowSexes = ["Homens", "Mulheres", "Ignorado"];
+const flowLabel = (labels: string[], index: number): string =>
+  index >= 0 ? (labels[index] ?? "") : "";
+const flowsCsvRows: (string | number)[][] = [];
+for (const year of flows.years) {
+  for (const [o, d, sx, g, sb, ex, mi, n] of flows.rows[String(year)] ?? []) {
+    flowsCsvRows.push([
+      year,
+      flows.endpoints[o ?? 0] ?? "",
+      flows.endpoint_names[o ?? 0] ?? "",
+      flows.endpoints[d ?? 0] ?? "",
+      flows.endpoint_names[d ?? 0] ?? "",
+      flowSexes[sx ?? 2] ?? "",
+      flowLabel(dimensions.cause_groups, g ?? -1),
+      flowLabel(dimensions.detailed_subgroups, sb ?? -1),
+      flowLabel(dimensions.external_cause_types, ex ?? -1),
+      flowLabel(dimensions.assault_means, mi ?? -1),
+      n ?? 0,
+    ]);
+  }
 }
-console.log(
-  `  ${bundleFile.replace(`${HERE}/../`, "")} ${(statSync(bundleFile).size / 1e6).toFixed(2)} MB`,
+const flowsCsv = encoder.encode(
+  toCsv(
+    [
+      "Ano",
+      "Código da residência",
+      "Residência",
+      "Código da ocorrência",
+      "Ocorrência",
+      "Sexo",
+      "Grupo de causa",
+      "Subgrupo detalhado",
+      "Tipo de causa externa",
+      "Meio de agressão",
+      "Óbitos",
+    ],
+    flowsCsvRows,
+  ),
 );
-
-const LOCATION_SHARDED_TABLES = JSON_TABLES.filter(
-  (table) => table !== "dimensions" && table !== "coverage",
-);
-
-const mortalityVersion = shortHash(indexedRaw);
-const versionDir = path.join(BY_LOCATION_OUT_DIR, mortalityVersion);
-rmSync(BY_LOCATION_OUT_DIR, { recursive: true, force: true });
-
-let shardCount = 0;
-let shardBytes = 0;
-for (const table of LOCATION_SHARDED_TABLES) {
-  const tableDir = path.join(versionDir, table);
-  mkdirSync(tableDir, { recursive: true });
-  const fullTable = indexed[table] as unknown[];
-  dimensions.locations.forEach((location, locationIndex) => {
-    const file = path.join(tableDir, `${location}.json`);
-    writeFileSync(file, JSON.stringify(fullTable[locationIndex] ?? []));
-    shardCount += 1;
-    shardBytes += statSync(file).size;
-  });
-}
-
-console.log(
-  `OK — data/mortality-indexed.json -> public/data/mortality/by-location/${mortalityVersion}/`,
+const flowsZipFile = path.join(CSV_OUT_DIR, "causa-mortis-rs-fluxos.zip");
+writeFileSync(
+  flowsZipFile,
+  buildZip([
+    {
+      name: "fluxos_residencia_ocorrencia.csv",
+      data: flowsCsv,
+      deflated: new Uint8Array(deflateRawSync(flowsCsv)),
+    },
+  ]),
 );
 console.log(
-  `  ${LOCATION_SHARDED_TABLES.length} tabelas × ${dimensions.locations.length} territórios = ${shardCount} arquivos, ${(shardBytes / 1e6).toFixed(2)} MB total`,
+  `OK — data/fluxos_rs.json.gz -> public/data/mortality/fluxos/${flowsVersion}/`,
+);
+console.log(
+  `  ${flowsCsvRows.length} linhas em CSV, ${(statSync(flowsZipFile).size / 1e6).toFixed(2)} MB (zip)`,
+);
+console.log(
+  `  ${flows.years.length} anos, ${(flowsBytes / 1e6).toFixed(2)} MB total`,
 );
 
 mkdirSync(GEO_OUT_DIR, { recursive: true });
@@ -438,6 +567,10 @@ console.log(
 
 writeFileSync(
   MANIFEST_OUT_FILE,
-  JSON.stringify({ mortalityVersion, geoFile }, null, 2) + "\n",
+  JSON.stringify(
+    { mortalityVersion, occurrenceVersion, flowsVersion, geoFile },
+    null,
+    2,
+  ) + "\n",
 );
 console.log(`OK — src/lib/mortality/data-manifest.json atualizado`);

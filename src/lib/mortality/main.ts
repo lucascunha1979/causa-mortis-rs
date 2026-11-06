@@ -6,14 +6,17 @@ import {
 import { sexLabel } from "./chart-titles";
 import { ageBands } from "./age-bands";
 import { createCustomSelect, type CustomSelect } from "./custom-select";
+import { setDataPlace } from "./data";
 import { ASSAULT_TYPE, fetchDimensions } from "./dimensions";
 import { DEFAULT_YEAR, FiltersStore } from "./filters";
-import { parseSharedState, SMR_PERIOD_VALUES } from "./share";
+import { FLOW_MIN_VALUES, parseSharedState, SMR_PERIOD_VALUES } from "./share";
 import { initSummaryStats } from "./summary-stats";
 import type {
   AgeMeasure,
   Dimensions,
   Filters,
+  FlowDirection,
+  Place,
   PyramidMeasure,
   Sex,
   SmrPeriod,
@@ -36,6 +39,7 @@ const CHART_LOADERS: Record<string, () => Promise<ChartModule>> = {
   "age-profile": () => import("./charts/age-profile"),
   "age-evolution": () => import("./charts/age-evolution"),
   smr: () => import("./charts/smr"),
+  flows: () => import("./charts/flows"),
 };
 
 const DEFAULT_CHART_TAB = "causes";
@@ -135,6 +139,44 @@ function setupSmrPeriodSelect(scope: ParentNode, store: FiltersStore): void {
     })),
   );
   store.subscribe((filters) => select.setValue(String(filters.smrPeriod)));
+}
+
+function setupPlaceSelect(scope: ParentNode, store: FiltersStore): void {
+  const select = customSelect(scope, `#filter-place`, (value) =>
+    store.setPlace(value as Place),
+  );
+  select.setOptions([
+    { value: "res", label: "Por residência" },
+    { value: "ocor", label: "Por ocorrência" },
+  ]);
+  store.subscribe((filters) => select.setValue(filters.place));
+}
+
+function setupFlowSelects(scope: ParentNode, store: FiltersStore): void {
+  const directionSelect = customSelect(
+    scope,
+    `#filter-flow-direction`,
+    (value) => store.setFlowDirection(value as FlowDirection),
+  );
+  directionSelect.setOptions([
+    { value: "both", label: "Saídas e entradas" },
+    { value: "out", label: "Só saídas (residentes)" },
+    { value: "in", label: "Só entradas (ocorridos)" },
+  ]);
+  const minSelect = customSelect(scope, `#filter-flow-min`, (value) =>
+    store.setFlowMin(Number(value)),
+  );
+  minSelect.setOptions(
+    FLOW_MIN_VALUES.map((value) => ({
+      value: String(value),
+      label:
+        value === 1 ? "Todas as ligações" : `Ligações com ${value}+ óbitos`,
+    })),
+  );
+  store.subscribe((filters) => {
+    directionSelect.setValue(filters.flowDirection);
+    minSelect.setValue(String(filters.flowMin));
+  });
 }
 
 const YEAR_PLAYBACK_INTERVAL_MS = 900;
@@ -326,6 +368,20 @@ export function setupYearControl(
   };
 }
 
+function setupPlaceNote(root: HTMLElement, store: FiltersStore): void {
+  const note = root.querySelector<HTMLElement>("#place-note");
+  if (!note) return;
+  let activeTab = DEFAULT_CHART_TAB;
+  const sync = (): void => {
+    note.hidden = store.get().place !== "ocor" || activeTab === "flows";
+  };
+  root.addEventListener("chart-tab-change", (event) => {
+    activeTab = (event as CustomEvent<string>).detail;
+    sync();
+  });
+  store.subscribe(sync);
+}
+
 interface CauseFilters {
   setDetailFiltersEnabled: (enabled: boolean) => void;
 }
@@ -452,6 +508,12 @@ function setupChartTabs(
   const smrWraps = [
     ...document.querySelectorAll<HTMLElement>('[id^="filter-smr-wrap"]'),
   ];
+  const placeWraps = [
+    ...document.querySelectorAll<HTMLElement>('[id^="filter-place-wrap"]'),
+  ];
+  const flowWraps = [
+    ...document.querySelectorAll<HTMLElement>('[id^="filter-flow-wrap"]'),
+  ];
 
   let panelsHeight: number | null = null;
   let settlePanelsHeight: (() => void) | null = null;
@@ -525,6 +587,14 @@ function setupChartTabs(
       wrap.toggleAttribute("hidden", target !== "age-profile");
     for (const wrap of smrWraps)
       wrap.toggleAttribute("hidden", target !== "smr");
+    for (const wrap of placeWraps)
+      wrap.toggleAttribute("hidden", target === "flows");
+    for (const wrap of flowWraps)
+      wrap.toggleAttribute("hidden", target !== "flows");
+    if (root instanceof HTMLElement)
+      root.dispatchEvent(
+        new CustomEvent("chart-tab-change", { detail: target }),
+      );
     setDetailFiltersEnabled(target !== "age-composition");
   }
 
@@ -574,6 +644,7 @@ export async function mountMortalityExplorer(root: HTMLElement): Promise<void> {
   );
 
   const store = new FiltersStore(initialFilters);
+  store.subscribe((filters) => setDataPlace(filters.place));
 
   const playback = createYearPlayback(dimensions, store);
   const causeFilterControllers: CauseFilters[] = [];
@@ -583,6 +654,9 @@ export async function mountMortalityExplorer(root: HTMLElement): Promise<void> {
   setupPyramidMeasureSelect(root, store);
   setupAgeSelects(root, dimensions, store);
   setupSmrPeriodSelect(root, store);
+  setupPlaceSelect(root, store);
+  setupFlowSelects(root, store);
+  setupPlaceNote(root, store);
   const setYearRangeMode = setupYearControl(root, dimensions, store, playback);
   causeFilterControllers.push(setupCauseFilters(root, dimensions, store));
 

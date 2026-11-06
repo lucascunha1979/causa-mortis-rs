@@ -1,6 +1,8 @@
 import type {
   AgeMeasure,
   Filters,
+  FlowDirection,
+  Place,
   PyramidMeasure,
   Sex,
   SmrPeriod,
@@ -124,6 +126,18 @@ export class FiltersStore {
   setSmrPeriod(smrPeriod: SmrPeriod): void {
     this.#set({ ...this.#filters, smrPeriod });
   }
+
+  setPlace(place: Place): void {
+    this.#set({ ...this.#filters, place });
+  }
+
+  setFlowDirection(flowDirection: FlowDirection): void {
+    this.#set({ ...this.#filters, flowDirection });
+  }
+
+  setFlowMin(flowMin: number): void {
+    this.#set({ ...this.#filters, flowMin });
+  }
 }
 
 export function isYearOnlyChange(
@@ -139,6 +153,9 @@ export function isYearOnlyChange(
     previous.ageBand === current.ageBand &&
     previous.ageMeasure === current.ageMeasure &&
     previous.smrPeriod === current.smrPeriod &&
+    previous.place === current.place &&
+    previous.flowDirection === current.flowDirection &&
+    previous.flowMin === current.flowMin &&
     previous.causeGroup === current.causeGroup &&
     previous.detailedSubgroup === current.detailedSubgroup &&
     previous.externalCauseType === current.externalCauseType &&

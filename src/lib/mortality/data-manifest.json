@@ -1,4 +1,6 @@
 {
-  "mortalityVersion": "4646bf5dd7",
+  "mortalityVersion": "ce94987c1a",
+  "occurrenceVersion": "d2791c00d3",
+  "flowsVersion": "2f3a9e45db",
   "geoFile": "versioned/c41b1c8162/rs-municipalities.geojson"
 }

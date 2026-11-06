@@ -152,12 +152,24 @@ const files = dataFiles.map((file) => ({
   isGeo: file.jsonFilePath.endsWith(".geojson"),
 }));
 
-const bundleHref = withBase(
-  "/data/mortality-csv/causa-mortis-rs-dados-completos.zip",
-);
-const bundleSize = formatSize(
-  fileSize("public/data/mortality-csv/causa-mortis-rs-dados-completos.zip"),
-);
+const bundles = [
+  {
+    file: "causa-mortis-rs-dados-completos.zip",
+    label: "Baixar tudo em CSV, por residência",
+  },
+  {
+    file: "causa-mortis-rs-dados-completos-ocorrencia.zip",
+    label: "Baixar tudo em CSV, por ocorrência",
+  },
+  {
+    file: "causa-mortis-rs-fluxos.zip",
+    label: "Baixar os fluxos em CSV",
+  },
+].map((bundle) => ({
+  href: withBase(`/data/mortality-csv/${bundle.file}`),
+  label: bundle.label,
+  size: formatSize(fileSize(`public/data/mortality-csv/${bundle.file}`)),
+}));
 ---
 
 <div class="flex w-full flex-col gap-4">
@@ -170,14 +182,20 @@ const bundleSize = formatSize(
       </h1>
     </div>
 
-    <a
-      href={bundleHref}
-      download
-      class="flex w-full shrink-0 items-center justify-center gap-2 rounded-ui-lg bg-primary-500 px-4 py-2 text-sm font-medium text-white transition-colors select-none hover:bg-primary-600 sm:w-auto"
-    >
-      <PackageOpen class="size-4" />
-      Baixar tudo em CSV ({bundleSize})
-    </a>
+    <div class="flex w-full flex-col gap-2 sm:w-auto">
+      {
+        bundles.map((bundle) => (
+          <a
+            href={bundle.href}
+            download
+            class="flex w-full shrink-0 items-center justify-center gap-2 rounded-ui-lg bg-primary-500 px-4 py-2 text-sm font-medium text-white transition-colors select-none hover:bg-primary-600 sm:w-auto sm:justify-start"
+          >
+            <PackageOpen class="size-4" />
+            {bundle.label} ({bundle.size})
+          </a>
+        ))
+      }
+    </div>
   </div>
 
   <ul class="flex flex-col gap-2">

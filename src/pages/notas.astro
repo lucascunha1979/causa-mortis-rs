@@ -158,6 +158,38 @@ const bibtex = `@software{causamortisrs2026,
             os óbitos com sexo ignorado. Os óbitos com idade ignorada não entram
             nessa aba.
           </p>
+          <p>
+            O filtro "Local do óbito" troca a base de todas as abas. Por
+            residência, cada óbito conta no município onde a pessoa morava
+            (CODMUNRES), e o total do estado é o de residentes no RS: é a forma
+            recomendada pela RIPSA para taxas. Por ocorrência, cada óbito conta
+            no município onde aconteceu (CODMUNOCOR), e o total do estado é o de
+            óbitos ocorridos no RS, inclusive de residentes de outros estados.
+            As regras de classificação, as faixas etárias, a padronização e a
+            SMR são as mesmas nas duas bases; muda só o município a que o óbito
+            é atribuído. O denominador é sempre a população residente do
+            município, a única estimada. Por isso, por ocorrência, a taxa não
+            mede o risco da população local: municípios com hospitais de
+            referência recebem óbitos de toda a região e ficam com taxas
+            maiores, e os vizinhos, com taxas menores. A cobertura do SIM só é
+            publicada por residência e não aparece na base por ocorrência.
+          </p>
+          <p>
+            Na aba Fluxos, cada ligação é um par município de residência →
+            município de ocorrência, contado no ano escolhido com os filtros de
+            sexo e causa. Entram os óbitos de residentes no RS e os ocorridos no
+            RS; cerca de um em cada cinco acontece fora do município de
+            residência. As linhas ligam os centroides dos municípios e são
+            agrupadas em quatro classes por quebras naturais de Jenks sobre o
+            número de óbitos das ligações exibidas. Ligações com outros estados
+            ficam no resumo e na tabela, porque não há ponto no mapa para elas.
+            Os totais da aba conferem, município a município e por grupo de
+            causa, com as duas bases. Em neoplasias, os poucos registros de C61
+            em mulheres e de C53 em homens vão para "Demais localizações" em
+            todos os recortes de sexo, como nas tabelas por sexo; no recorte
+            "Todos" das tabelas eles ficam na localização original. Na série
+            atual isso afeta um único registro (2025).
+          </p>
         </div>
       </div>
     </div>
@@ -188,10 +220,10 @@ const bibtex = `@software{causamortisrs2026,
           </li>
           <li>
             <strong>Detalhamento.</strong> O estado e os 497 municípios por local
-            de residência, grandes grupos de causas (com segundo nível onde a RIPSA
-            o normatiza: neoplasias, cardiovasculares e causas externas) e dados anuais.
-            Óbitos com município de residência ignorado (65 na série) entram só no
-            total do estado.
+            de residência ou de ocorrência, grandes grupos de causas (com segundo
+            nível onde a RIPSA o normatiza: neoplasias, cardiovasculares e causas
+            externas) e dados anuais. Óbitos com município de residência ignorado
+            (65 na série) entram só no total do estado; por ocorrência, são 2 na série.
           </li>
           <li>
             <strong>Municípios pequenos.</strong> Com poucos óbitos por ano, as taxas
@@ -326,6 +358,9 @@ const bibtex = `@software{causamortisrs2026,
           ageBand: DEFAULT_AGE_BAND,
           ageMeasure: "rate",
           smrPeriod: 3,
+          place: "res",
+          flowDirection: "both",
+          flowMin: 1,
         });
 
         const playback = main.createYearPlayback(dimensions, store);

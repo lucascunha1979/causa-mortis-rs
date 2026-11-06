@@ -2,12 +2,14 @@ import * as echarts from "echarts/core";
 import type {
   BarSeriesOption,
   LineSeriesOption,
+  LinesSeriesOption,
   MapSeriesOption,
   PieSeriesOption,
   ScatterSeriesOption,
   TreemapSeriesOption,
 } from "echarts/charts";
 import type {
+  GeoComponentOption,
   GridComponentOption,
   LegendComponentOption,
   MarkAreaComponentOption,
@@ -31,10 +33,12 @@ export type { CallbackDataParams, LineSeriesOption, TopLevelFormatterParams };
 export type EChartsOption = ComposeOption<
   | BarSeriesOption
   | LineSeriesOption
+  | LinesSeriesOption
   | MapSeriesOption
   | PieSeriesOption
   | ScatterSeriesOption
   | TreemapSeriesOption
+  | GeoComponentOption
   | GridComponentOption
   | LegendComponentOption
   | MarkAreaComponentOption

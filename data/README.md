@@ -1,12 +1,19 @@
 # Dados de mortalidade
 
-`mortality-indexed.json` é a base bruta usada pelos gráficos do site (RS + 497 municípios,
-aninhados por índice — ver `dimensions` para resolver cada índice ao rótulo correspondente).
-É gerado por `../pipeline/05_06_montar_indexed_rs_v4.py` e verificado por
-`../pipeline/08_assercoes_rs_v3.py`. Tem cerca de 155 MB, acima do limite de 100 MB do GitHub, por isso
-o repositório guarda só `mortality-indexed.json.gz` (14 MB, `gzip -9`); o script de geração lê
-o `.gz` diretamente quando o `.json` não existe, e a versão publicada (hash do conteúdo) é a
-mesma nos dois casos. Ao regenerar o arquivo, atualize o `.gz` com `gzip -9 -k data/mortality-indexed.json`.
+Há duas bases com a mesma estrutura, uma por local do óbito, e uma tabela de fluxos:
+
+- `mortality-indexed.json.gz`: por **residência** (CODMUNRES). RS = residentes no RS.
+- `mortality-indexed-ocorrencia.json.gz`: por **ocorrência** (CODMUNOCOR). RS = óbitos ocorridos no RS,
+  inclusive de não residentes. O denominador é a população residente do município (a única estimada).
+- `fluxos_rs.json.gz`: pares município de residência → município de ocorrência, por ano, sexo e causa,
+  para os óbitos de residentes no RS ou ocorridos no RS.
+
+As bases (RS + 497 municípios, aninhadas por índice; ver `dimensions` para resolver cada índice ao
+rótulo) são geradas por `../pipeline/05_06_montar_indexed_rs_v5.py res|ocor` e verificadas por
+`../pipeline/08_assercoes_rs_v4.py res|ocor`; os fluxos, por `../pipeline/07_fluxos_rs.py`, que confere
+seus totais com as duas bases. Descompactada, cada base tem cerca de 155 MB, acima do limite de 100 MB do
+GitHub, por isso o repositório guarda só os `.gz` (`gzip -9`). O script de geração lê o `.json`, se
+existir, ou o `.gz`.
 
 `rs-municipalities-simplified.geojson` é a malha municipal usada pelo mapa (API de malhas do
 IBGE, qualidade mínima, coordenadas com 4 casas; `properties.name` = 6 primeiros dígitos do
@@ -14,7 +21,8 @@ código IBGE). A malha em qualidade intermediária fica em `public/data/geo/rs-m
 mantida intacta para a seção de download.
 
 Nenhum desses arquivos-fonte é servido ao navegador. `scripts/generate-mortality-data.ts`
-os lê e gera, em `public/data/mortality/`:
+os lê e gera, em `public/data/mortality/` (residência), `public/data/mortality/ocorrencia/` (ocorrência)
+e `public/data/mortality/fluxos/<versão>/` (um arquivo por ano):
 
 - as tabelas completas (`*.json`/`*.csv`, todos os territórios juntos), usadas
   pela seção de download do site;
@@ -29,7 +37,8 @@ versionada do geojson simplificado em `public/data/geo/versioned/<hash>/`.
 `src/lib/mortality/data-manifest.json` guarda a versão atual e é lido pelo
 código do site para montar essas URLs — não editar à mão.
 
-Rodar sempre que `mortality-indexed.json` for atualizado:
+Os arquivos gerados não ficam no repositório (`.gitignore`): o workflow de publicação roda o script
+antes do build. Para trabalhar localmente, rode:
 
 ```
 npm run data:generate

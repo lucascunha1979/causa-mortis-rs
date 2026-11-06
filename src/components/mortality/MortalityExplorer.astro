@@ -6,6 +6,7 @@ import {
   LayoutPanelLeft,
   Map,
   Scale,
+  Waypoints,
 } from "@lucide/astro";
 import OneTwoThreeIcon from "../icons/OneTwoThreeIcon.astro";
 import PopulationPyramidIcon from "../icons/PopulationPyramidIcon.astro";
@@ -27,6 +28,7 @@ const charts = [
   { name: "pyramid", label: "Sexo", icon: PopulationPyramidIcon },
   { name: "age-profile", label: "Faixa etária", icon: ChartBarBig },
   { name: "smr", label: "Observado × esperado", icon: Scale },
+  { name: "flows", label: "Fluxos", icon: Waypoints },
   { name: "stats", label: "Resumo", icon: OneTwoThreeIcon },
 ];
 ---
@@ -52,6 +54,17 @@ const charts = [
       </div>
     </div>
   </div>
+  <p
+    id="place-note"
+    hidden
+    class="rounded-ui-md border border-rate-300 bg-rate-50 p-3 text-sm text-gray-800 dark:border-rate-800 dark:bg-rate-900 dark:text-gray-100"
+  >
+    <strong>Por local de ocorrência:</strong> cada óbito conta no município onde aconteceu,
+    inclusive o de quem morava em outro município ou estado. As taxas usam a população
+    residente do município, porque é a única que existe; por isso não medem o risco
+    da população local. Municípios com hospitais de referência aparecem com taxas
+    mais altas, e os vizinhos que dependem deles, mais baixas.
+  </p>
   <YearControl />
 
   <div class="flex flex-col gap-4 md:flex-row md:items-start">
@@ -280,6 +293,54 @@ const charts = [
         </details>
         <div
           data-smr-table
+          class="max-h-96 overflow-auto rounded-ui-md border border-gray-200 dark:border-gray-700"
+        >
+        </div>
+      </ChartCard>
+
+      <ChartCard
+        title="Fluxos entre residência e ocorrência"
+        chartId="chart-flows"
+        chartName="flows"
+        height="h-108 md:h-136"
+        fullscreenToggle
+      >
+        <p
+          data-flows-summary
+          class="rounded-ui-md bg-primary-50 p-3 text-sm text-gray-800 dark:bg-primary-950 dark:text-gray-100"
+        >
+        </p>
+        <details
+          class="rounded-ui-md border border-gray-200 p-3 text-sm text-gray-700 dark:border-gray-700 dark:text-gray-300"
+        >
+          <summary class="cursor-pointer font-semibold">
+            Como ler este mapa
+          </summary>
+          <div class="flex flex-col gap-2 pt-2">
+            <p>
+              Cada linha liga o município onde a pessoa morava ao município onde
+              o óbito aconteceu. A espessura e a cor acompanham o número de
+              óbitos da ligação, e os círculos marcam os municípios que mais
+              recebem óbitos de outros lugares, em geral por terem hospitais de
+              referência.
+            </p>
+            <p>
+              Com o território "Rio Grande do Sul", o mapa mostra a rede inteira
+              do estado. Ao escolher um município, aparecem só as ligações dele:
+              as saídas (onde os residentes morreram, fora do município) e as
+              entradas (de onde vieram os óbitos ocorridos nele). O filtro
+              "Sentido" escolhe entre as duas.
+            </p>
+            <p>
+              Óbitos em que a pessoa morava e morreu no mesmo município não
+              geram linha, mas entram no resumo. Ligações com outros estados
+              aparecem no resumo e na tabela, não no mapa. O filtro "Ligações"
+              esconde as ligações pequenas para deixar a rede mais legível.
+            </p>
+          </div>
+        </details>
+        <div
+          data-flows-table
           class="max-h-96 overflow-auto rounded-ui-md border border-gray-200 dark:border-gray-700"
         >
         </div>

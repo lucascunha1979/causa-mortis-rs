@@ -70,6 +70,10 @@ export function sexLabel(sex: Sex): string {
   return "Todos";
 }
 
+export function placeLabel(filters: Filters): string {
+  return filters.place === "ocor" ? "Por ocorrência" : "Por residência";
+}
+
 export function yearLabel(year: number, dimensions: Dimensions): string {
   const maxYear = Math.max(...dimensions.years);
   return year === maxYear ? `${year} (preliminar)` : String(year);
@@ -88,7 +92,7 @@ export function mapChartTitle(
 ): ChartTitle {
   return {
     line1: `Mortalidade por município - ${causePathLabel(filters)}`,
-    line2: `${yearLabel(filters.year, dimensions)} · ${sexLabel(filters.sex)}`,
+    line2: `${yearLabel(filters.year, dimensions)} · ${sexLabel(filters.sex)} · ${placeLabel(filters)}`,
   };
 }
 
@@ -98,7 +102,7 @@ export function evolutionChartTitle(
 ): ChartTitle {
   return {
     line1: `Histórico de mortalidade - ${causePathLabel(filters)}`,
-    line2: `${filters.yearStart}-${filters.yearEnd} · ${sexLabel(filters.sex)} · ${locationLabel(dimensions, filters.location)}`,
+    line2: `${filters.yearStart}-${filters.yearEnd} · ${sexLabel(filters.sex)} · ${locationLabel(dimensions, filters.location)} · ${placeLabel(filters)}`,
   };
 }
 
@@ -108,7 +112,7 @@ export function causesChartTitle(
 ): ChartTitle {
   return {
     line1: `Composição da mortalidade - ${causePathLabel(filters)}`,
-    line2: `${yearLabel(filters.year, dimensions)} · ${sexLabel(filters.sex)} · ${locationLabel(dimensions, filters.location)}`,
+    line2: `${yearLabel(filters.year, dimensions)} · ${sexLabel(filters.sex)} · ${locationLabel(dimensions, filters.location)} · ${placeLabel(filters)}`,
   };
 }
 
@@ -116,7 +120,17 @@ export function statsChartTitle(
   filters: Filters,
   dimensions: Dimensions,
 ): string {
-  return `Resumo · ${yearLabel(filters.year, dimensions)}`;
+  return `Resumo · ${yearLabel(filters.year, dimensions)} · ${placeLabel(filters).toLowerCase()}`;
+}
+
+export function flowsChartTitle(
+  filters: Filters,
+  dimensions: Dimensions,
+): ChartTitle {
+  return {
+    line1: `Fluxos residência → ocorrência - ${causePathLabel(filters)}`,
+    line2: `${yearLabel(filters.year, dimensions)} · ${sexLabel(filters.sex)} · ${locationLabel(dimensions, filters.location)}`,
+  };
 }
 
 export function ageCompositionChartTitle(
@@ -125,7 +139,7 @@ export function ageCompositionChartTitle(
 ): ChartTitle {
   return {
     line1: "Composição da mortalidade por faixa etária",
-    line2: `${yearLabel(filters.year, dimensions)} · ${sexLabel(filters.sex)} · ${locationLabel(dimensions, filters.location)}`,
+    line2: `${yearLabel(filters.year, dimensions)} · ${sexLabel(filters.sex)} · ${locationLabel(dimensions, filters.location)} · ${placeLabel(filters)}`,
   };
 }
 
@@ -142,7 +156,7 @@ export function pyramidChartTitle(
 ): ChartTitle {
   return {
     line1: `Pirâmide de mortalidade - ${causePathLabel(filters)}`,
-    line2: `${yearLabel(filters.year, dimensions)} · ${locationLabel(dimensions, filters.location)}`,
+    line2: `${yearLabel(filters.year, dimensions)} · ${locationLabel(dimensions, filters.location)} · ${placeLabel(filters)}`,
   };
 }
 
@@ -153,7 +167,7 @@ export function ageProfileChartTitle(
 ): ChartTitle {
   return {
     line1: `Mortalidade na faixa de ${bandName} - ${causePathLabel(filters)}`,
-    line2: `${yearLabel(filters.year, dimensions)} · ${locationLabel(dimensions, filters.location)}`,
+    line2: `${yearLabel(filters.year, dimensions)} · ${locationLabel(dimensions, filters.location)} · ${placeLabel(filters)}`,
   };
 }
 
@@ -164,7 +178,7 @@ export function ageEvolutionChartTitle(
 ): ChartTitle {
   return {
     line1: `Evolução na faixa de ${bandName} - ${causePathLabel(filters)}`,
-    line2: `${Math.min(...dimensions.years)}-${Math.max(...dimensions.years)} · ${locationLabel(dimensions, filters.location)}`,
+    line2: `${Math.min(...dimensions.years)}-${Math.max(...dimensions.years)} · ${locationLabel(dimensions, filters.location)} · ${placeLabel(filters)}`,
   };
 }
 
@@ -174,6 +188,6 @@ export function smrChartTitle(
 ): ChartTitle {
   return {
     line1: `Mortalidade observada × esperada - ${causePathLabel(filters)}`,
-    line2: `${periodLabel} · ${sexLabel(filters.sex)}`,
+    line2: `${periodLabel} · ${sexLabel(filters.sex)} · ${placeLabel(filters)}`,
   };
 }

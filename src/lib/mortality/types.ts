@@ -104,10 +104,34 @@ export interface MortalityIndexed {
   smr_by_detailed_subgroup: SmrByCauseTable;
 }
 
+export type FlowRow = [
+  origin: number,
+  destination: number,
+  sex: number,
+  causeGroup: number,
+  detailedSubgroup: number,
+  externalCause: number,
+  assaultMeans: number,
+  deaths: number,
+];
+
+export interface FlowsYear {
+  year: number;
+  rows: FlowRow[];
+}
+
+export interface FlowsMeta {
+  endpoints: string[];
+  endpoint_names: string[];
+  municipality_count: number;
+}
+
 export type Sex = "Ambos" | "Homens" | "Mulheres";
 export type PyramidMeasure = "deaths" | "rate";
 export type AgeMeasure = "deaths" | "rate" | "share";
 export type SmrPeriod = 1 | 3 | 5;
+export type Place = "res" | "ocor";
+export type FlowDirection = "both" | "out" | "in";
 
 export interface CauseFilter {
   causeGroup: string | null;
@@ -126,4 +150,7 @@ export interface Filters extends CauseFilter {
   ageBand: string;
   ageMeasure: AgeMeasure;
   smrPeriod: SmrPeriod;
+  place: Place;
+  flowDirection: FlowDirection;
+  flowMin: number;
 }
